@@ -1,0 +1,46 @@
+<permalinks>
+    <Permalink>
+        <pattern>Game/Board/(\d*)</pattern>
+        <dispatcher>org.soen387.app.dispatcher.Game</dispatcher>
+        <attribute name="checkerboard" />
+    </Permalink>
+    <Permalink>
+        <pattern>Game/Challenge/</pattern>
+        <dispatcher>org.soen387.app.dispatcher.ListChallenges</dispatcher>
+    </Permalink>    
+    <Permalink>
+        <pattern>Game/ListGames</pattern>
+        <dispatcher>org.soen387.app.dispatcher.ListGames</dispatcher>
+    </Permalink>
+    <Permalink>
+        <pattern>Game/ListPlayers</pattern>
+        <dispatcher>org.soen387.app.dispatcher.ListPlayers</dispatcher>
+    </Permalink>
+    <Permalink>
+        <pattern>Game/LogIn</pattern>
+        <dispatcher>org.soen387.app.dispatcher.LogIn</dispatcher>
+    </Permalink>
+    <Permalink>
+        <pattern>Game/LogOut</pattern>
+        <dispatcher>org.soen387.app.dispatcher.LogOut</dispatcher>
+    </Permalink>
+    <Permalink>
+        <pattern>Game/Register</pattern>
+        <dispatcher>org.soen387.app.dispatcher.Register</dispatcher>
+    </Permalink>
+    <Permalink>
+        <pattern>Game/Player/(\d*)</pattern>
+        <dispatcher>org.soen387.app.dispatcher.ViewPlayer</dispatcher>
+        <attribute name="player" />
+    </Permalink>
+    <Permalink>
+        <pattern>Game/Player/(\d*)/Challenge</pattern>
+        <dispatcher>org.soen387.app.dispatcher.ChallengePlayer</dispatcher>
+        <attribute name="player" />
+    </Permalink>
+    <Permalink>
+        <pattern>Game/Challenge/(\d*)</pattern>
+        <dispatcher>org.soen387.app.dispatcher.RespondToChallenge</dispatcher>
+        <attribute name="challenge" />
+    </Permalink>
+</permalinks>
