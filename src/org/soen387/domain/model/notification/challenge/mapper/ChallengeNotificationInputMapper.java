@@ -107,10 +107,13 @@ public class ChallengeNotificationInputMapper
     
     private static ChallengeNotification buildNotification(ResultSet rs) throws SQLException, MapperException
     {
+        long id = rs.getLong("id");
+        long version = rs.getLong("version");
         IPlayer recipient = new PlayerProxy(rs.getLong("recipient"));
+        boolean seen = rs.getBoolean("seen");
         IChallenge challenge = new ChallengeProxy(rs.getLong("challenge"));
         ChallengeNotificationType type = ChallengeNotificationType.fromNumVal(rs.getInt("type"));
         
-        return ChallengeNotificationFactory.createNew(recipient, challenge, type);
+        return ChallengeNotificationFactory.createClean(id, version, recipient, seen, challenge, type);
     }
 }

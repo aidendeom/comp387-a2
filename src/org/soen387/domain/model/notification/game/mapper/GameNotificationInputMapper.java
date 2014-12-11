@@ -108,10 +108,13 @@ public class GameNotificationInputMapper implements IdentityBasedProducer
     
     private static GameNotification buildNotification(ResultSet rs) throws SQLException, MapperException
     {
+        long id = rs.getLong("id");
+        long version = rs.getLong("version");
         IPlayer recipient = new PlayerProxy(rs.getLong("recipient"));
+        boolean seen = rs.getBoolean("seen");
         ICheckerBoard board = new CheckerBoardProxy(rs.getLong("board"));
         GameNotificationType type = GameNotificationType.fromNumVal(rs.getInt("type"));
         
-        return GameNotificationFactory.createNew(recipient, board, type);
+        return GameNotificationFactory.createClean(id, version, recipient, seen, board, type);
     }
 }
