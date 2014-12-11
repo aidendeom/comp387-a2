@@ -4,15 +4,17 @@ import org.soen387.domain.model.checkerboard.ICheckerBoard;
 import org.soen387.domain.model.notification.Notification;
 import org.soen387.domain.model.player.IPlayer;
 
-public abstract class GameNotification extends Notification
+public class GameNotification extends Notification
 {
     private ICheckerBoard board;
+    private GameNotificationType type;
 
     public GameNotification(Long id, Long version, IPlayer recipient,
-            boolean seen, ICheckerBoard board)
+            boolean seen, ICheckerBoard board, GameNotificationType type)
     {
         super(id, version, recipient, seen);
         this.board = board;
+        this.type = type;
     }
 
     public ICheckerBoard getBoard()
@@ -23,5 +25,15 @@ public abstract class GameNotification extends Notification
     public void setBoard(ICheckerBoard board)
     {
         this.board = board;
+    }
+
+    public GameNotificationType getType()
+    {
+        return type;
+    }
+
+    public void setType(GameNotificationType type)
+    {
+        this.type = type;
     }
 }
