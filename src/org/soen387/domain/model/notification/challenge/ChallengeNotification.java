@@ -8,10 +8,10 @@ import org.soen387.domain.model.player.IPlayer;
 public class ChallengeNotification extends Notification
 {    
     private IChallenge challenge;
-    private ChallengeNotifcationType type;
+    private ChallengeNotificationType type;
     
     public ChallengeNotification(Long id, Long version, IPlayer recipient,
-            boolean seen, IChallenge challenge, ChallengeNotifcationType type)
+            boolean seen, IChallenge challenge, ChallengeNotificationType type)
     {
         super(id, version, recipient, seen);
         this.setChallenge(challenge);
@@ -28,12 +28,12 @@ public class ChallengeNotification extends Notification
         this.challenge = challenge;
     }
 
-    public ChallengeNotifcationType getType()
+    public ChallengeNotificationType getType()
     {
         return type;
     }
 
-    public void setType(ChallengeNotifcationType type)
+    public void setType(ChallengeNotificationType type)
     {
         this.type = type;
     }

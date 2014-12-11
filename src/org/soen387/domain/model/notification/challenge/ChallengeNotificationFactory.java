@@ -10,14 +10,14 @@ import org.soen387.domain.model.player.IPlayer;
 
 public class ChallengeNotificationFactory
 {
-    public static ChallengeNotification createNew(IPlayer recipient, IChallenge challenge, ChallengeNotifcationType type) throws SQLException, MapperException
+    public static ChallengeNotification createNew(IPlayer recipient, IChallenge challenge, ChallengeNotificationType type) throws SQLException, MapperException
     {
         ChallengeNotification n = new ChallengeNotification(ChallengeNotificationTDG.getMaxId(), 1L, recipient, false, challenge, type);
         UoW.getCurrent().registerNew(n);
         return n;
     }
     
-    public static ChallengeNotification createClean(long id, long version, IPlayer recipient, boolean seen, IChallenge challenge, ChallengeNotifcationType type)
+    public static ChallengeNotification createClean(long id, long version, IPlayer recipient, boolean seen, IChallenge challenge, ChallengeNotificationType type)
     {
         ChallengeNotification n = new ChallengeNotification(id, version, recipient, seen, challenge, type);
         UoW.getCurrent().registerClean(n);

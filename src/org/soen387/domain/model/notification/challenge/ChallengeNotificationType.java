@@ -1,16 +1,16 @@
 package org.soen387.domain.model.notification.challenge;
 
-public enum ChallengeNotifcationType
+public enum ChallengeNotificationType
 {
     Issued(0),
     Accepted(1),
     Refused(2);
     
-    private static ChallengeNotifcationType[] values = ChallengeNotifcationType.values();
+    private static ChallengeNotificationType[] values = ChallengeNotificationType.values();
     
     private int numVal;
     
-    private ChallengeNotifcationType(int numVal)
+    private ChallengeNotificationType(int numVal)
     {
         this.numVal = numVal;
     }
@@ -20,7 +20,7 @@ public enum ChallengeNotifcationType
         return numVal;
     }
     
-    public static ChallengeNotifcationType fromNumVal(int numVal)
+    public static ChallengeNotificationType fromNumVal(int numVal)
     {
         return values[numVal];
     }
