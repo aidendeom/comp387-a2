@@ -20,4 +20,9 @@ public enum GameNotificationType
     {
         return numVal;
     }
+    
+    public static GameNotificationType fromNumVal(int numVal)
+    {
+        return GameNotificationType.values()[numVal];
+    }
 }

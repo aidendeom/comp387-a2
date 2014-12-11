@@ -10,9 +10,14 @@ import org.dsrg.soenea.domain.ObjectRemovedException;
 import org.dsrg.soenea.domain.mapper.DomainObjectNotFoundException;
 import org.dsrg.soenea.domain.mapper.IdentityMap;
 import org.dsrg.soenea.domain.producer.IdentityBasedProducer;
+import org.soen387.domain.model.checkerboard.CheckerBoardProxy;
+import org.soen387.domain.model.checkerboard.ICheckerBoard;
 import org.soen387.domain.model.notification.game.GameNotification;
+import org.soen387.domain.model.notification.game.GameNotificationFactory;
+import org.soen387.domain.model.notification.game.GameNotificationType;
 import org.soen387.domain.model.notification.game.tdg.GameNotificationFinder;
 import org.soen387.domain.model.player.IPlayer;
+import org.soen387.domain.model.player.PlayerProxy;
 
 public class GameNotificationInputMapper implements IdentityBasedProducer
 {
@@ -74,7 +79,7 @@ public class GameNotificationInputMapper implements IdentityBasedProducer
         }
     }
     
-    private static List<GameNotification> buildCollection(ResultSet rs) throws SQLException, DomainObjectNotFoundException 
+    private static List<GameNotification> buildCollection(ResultSet rs) throws SQLException, MapperException 
     {
         ArrayList<GameNotification> l = new ArrayList<GameNotification>();
         while(rs.next())
@@ -101,9 +106,12 @@ public class GameNotificationInputMapper implements IdentityBasedProducer
         return l;
     }
     
-    private static GameNotification buildNotification(ResultSet rs)
+    private static GameNotification buildNotification(ResultSet rs) throws SQLException, MapperException
     {
-        // TODO: Make GameNotificationFactory to build this!!!
-        return null;
+        IPlayer recipient = new PlayerProxy(rs.getLong("recipient"));
+        ICheckerBoard board = new CheckerBoardProxy(rs.getLong("board"));
+        GameNotificationType type = GameNotificationType.fromNumVal(rs.getInt("type"));
+        
+        return GameNotificationFactory.createNew(recipient, board, type);
     }
 }
