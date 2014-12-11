@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 import org.dsrg.soenea.service.threadLocal.DbRegistry;
 
-public class ChallengeNotificationFinder
+public class GameNotificationFinder
 {
     public static final String FIND = "SELECT " + GameNotificationTDG.COLUMNS
             + " FROM " + GameNotificationTDG.TABLE_NAME + " WHERE id=?;";
