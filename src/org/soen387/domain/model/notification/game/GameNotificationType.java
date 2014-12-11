@@ -9,7 +9,9 @@ public enum GameNotificationType
     Tied(4),
     Conceded(5);
     
-    int numVal;
+    private static GameNotificationType[] values = GameNotificationType.values();
+    
+    private int numVal;
     
     private GameNotificationType(int numVal)
     {
@@ -23,6 +25,6 @@ public enum GameNotificationType
     
     public static GameNotificationType fromNumVal(int numVal)
     {
-        return GameNotificationType.values()[numVal];
+        return values[numVal];
     }
 }

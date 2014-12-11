@@ -6,6 +6,8 @@ public enum ChallengeNotifcationType
     Accepted(1),
     Refused(2);
     
+    private static ChallengeNotifcationType[] values = ChallengeNotifcationType.values();
+    
     private int numVal;
     
     private ChallengeNotifcationType(int numVal)
@@ -16,5 +18,10 @@ public enum ChallengeNotifcationType
     public int getNumVal()
     {
         return numVal;
+    }
+    
+    public static ChallengeNotifcationType fromNumVal(int numVal)
+    {
+        return values[numVal];
     }
 }
