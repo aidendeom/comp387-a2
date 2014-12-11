@@ -41,7 +41,7 @@ public class GameNotificationOutputMapper extends GenericOutputMapper<Long, Game
     }
 
     @Override
-    public void delete(GameNotification n) throws MapperException
+    public void delete(GameNotification n) throws MapperException, LostUpdateException
     {
         try
         {
