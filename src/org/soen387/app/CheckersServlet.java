@@ -21,6 +21,10 @@ import org.soen387.domain.model.challenge.Challenge;
 import org.soen387.domain.model.challenge.mapper.ChallengeOutputMapper;
 import org.soen387.domain.model.checkerboard.CheckerBoard;
 import org.soen387.domain.model.checkerboard.mapper.CheckerBoardOutputMapper;
+import org.soen387.domain.model.notification.challenge.ChallengeNotification;
+import org.soen387.domain.model.notification.challenge.mapper.ChallengeNotificationOutputMapper;
+import org.soen387.domain.model.notification.game.GameNotification;
+import org.soen387.domain.model.notification.game.mapper.GameNotificationOutputMapper;
 import org.soen387.domain.model.player.Player;
 import org.soen387.domain.model.player.mapper.PlayerOutputMapper;
 
@@ -78,6 +82,8 @@ public class CheckersServlet extends DispatcherServlet {
 		myDomain2MapperMapper.addMapping(User.class,UserOutputMapper.class);
 		myDomain2MapperMapper.addMapping(CheckerBoard.class,CheckerBoardOutputMapper.class);
 		myDomain2MapperMapper.addMapping(Challenge.class,ChallengeOutputMapper.class);
+		myDomain2MapperMapper.addMapping(GameNotification.class, GameNotificationOutputMapper.class);
+		myDomain2MapperMapper.addMapping(ChallengeNotification.class, ChallengeNotificationOutputMapper.class);
 		UoW.initMapperFactory(myDomain2MapperMapper);
 	}
 	

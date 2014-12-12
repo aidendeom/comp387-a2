@@ -21,12 +21,15 @@ public abstract class CheckersDispatcher extends Dispatcher {
 		if (myHelper.getString("mode").equalsIgnoreCase("xml")) {
 			isXML = true;
 		}
+		// TODO: Remove this!!!!
+		isXML = true;
 		isSubmission = !myRequest.getMethod().equalsIgnoreCase("GET");
 	}
 
 	@Override
 	public void forward(String jsp) throws IOException, ServletException {
-		super.forward("/WEB-INF/jsp/" + (isXML ? "xml/" : "html/") + jsp);
+	    String location = "/WEB-INF/jsp/" + (isXML ? "xml/" : "html/") + jsp;
+		super.forward(location);
 	}
 
 	public void fail(Throwable e) throws IOException, ServletException {
