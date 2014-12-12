@@ -22,15 +22,9 @@ public class Move extends CheckersDispatcher{
 			try {
 				new MoveCommand(myHelper).execute();
 				UoW.getCurrent().commit();
-				forward("challenge.jsp");
+				forward("move.jsp");
 			} catch (final NeedToBeLoggedInException e) {
 				fail("You need to be logged in to challenge a player.");
-			} catch (final CannotChallengeSelfException e) {
-				fail("You can't challenge yourself.");
-			} catch (final OnlyOneOpenChallengeBetweenPlayersException e) {
-				fail("You may only have one open challenge against another player.");
-			} catch (final OnlyOneOngoingGameBetweenPlayersException e) {
-				fail("You may not issue a challenge against a player with whom you have an ongoing game.");
 			} catch (final CommandException e) {
 				fail(e);
 			} catch (InstantiationException | IllegalAccessException | MapperException | SQLException e) {
