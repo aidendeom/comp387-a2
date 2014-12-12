@@ -21,8 +21,9 @@ public class Move extends CheckersDispatcher{
 		if(isSubmission) {
 			try {
 				new MoveCommand(myHelper).execute();
-				UoW.getCurrent().commit();
-				forward("move.jsp");
+				UoW.getCurrent().commit(); //we need UoW to save our move to game changes
+				forward("move.jsp"); 
+				//do we also need to catch an exception on "current player in game?"
 			} catch (final NeedToBeLoggedInException e) {
 				fail("You need to be logged in to challenge a player.");
 			} catch (final CommandException e) {
