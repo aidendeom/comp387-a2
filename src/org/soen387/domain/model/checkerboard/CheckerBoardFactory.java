@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import org.dsrg.soenea.domain.MapperException;
 import org.dsrg.soenea.uow.UoW;
 import org.soen387.domain.model.checkerboard.tdg.CheckerBoardTDG;
+import org.soen387.domain.model.notification.game.GameNotificationFactory;
+import org.soen387.domain.model.notification.game.GameNotificationType;
 import org.soen387.domain.model.player.IPlayer;
 
 public class CheckerBoardFactory {
@@ -19,6 +21,9 @@ public class CheckerBoardFactory {
 			IPlayer currentPlayer) throws SQLException, MapperException{
 		CheckerBoard cb = new CheckerBoard(id, version, status, pieces, firstPlayer, secondPlayer, currentPlayer);
 		UoW.getCurrent().registerNew(cb);
+		
+		GameNotificationFactory.createNew(secondPlayer, cb, GameNotificationType.Started);
+		
 		return cb;
 	}
 	

@@ -22,7 +22,7 @@ public abstract class CheckersDispatcher extends Dispatcher {
 			isXML = true;
 		}
 		// TODO: Remove this!!!!
-		isXML = true;
+		//isXML = true;
 		isSubmission = !myRequest.getMethod().equalsIgnoreCase("GET");
 	}
 
