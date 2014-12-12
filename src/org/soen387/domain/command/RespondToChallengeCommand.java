@@ -18,6 +18,8 @@ import org.soen387.domain.model.challenge.ChallengeStatus;
 import org.soen387.domain.model.challenge.IChallenge;
 import org.soen387.domain.model.challenge.mapper.ChallengeInputMapper;
 import org.soen387.domain.model.checkerboard.CheckerBoardFactory;
+import org.soen387.domain.model.notification.challenge.ChallengeNotificationFactory;
+import org.soen387.domain.model.notification.challenge.ChallengeNotificationType;
 
 public class RespondToChallengeCommand extends CheckersCommand {
 
@@ -59,6 +61,10 @@ public class RespondToChallengeCommand extends CheckersCommand {
 			challenge.setStatus(status);
 			if(status.equals(ChallengeStatus.Accepted)) {
 				CheckerBoardFactory.createNew(currentPlayer, challenge.getChallenger());
+			}
+			else
+			{
+			    ChallengeNotificationFactory.createNew(challenge.getChallenger(), challenge, ChallengeNotificationType.Refused);
 			}
 			UoW.getCurrent().registerDirty(challenge);
 			

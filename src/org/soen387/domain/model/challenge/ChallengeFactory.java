@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import org.dsrg.soenea.domain.MapperException;
 import org.dsrg.soenea.uow.UoW;
 import org.soen387.domain.model.challenge.tdg.ChallengeTDG;
+import org.soen387.domain.model.notification.challenge.ChallengeNotificationFactory;
+import org.soen387.domain.model.notification.challenge.ChallengeNotificationType;
 import org.soen387.domain.model.player.IPlayer;
 
 public class ChallengeFactory {
@@ -17,6 +19,9 @@ public class ChallengeFactory {
 			IPlayer challengee, ChallengeStatus status) throws SQLException, MapperException{
 		Challenge c = new Challenge(id, version, challenger, challengee, status);
 		UoW.getCurrent().registerNew(c);
+		
+		ChallengeNotificationFactory.createNew(challengee, c, ChallengeNotificationType.Issued);
+		
 		return c;
 	}
 	
