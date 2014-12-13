@@ -45,4 +45,18 @@ public class GameNotificationFinder
         
         return ps.executeQuery();
     }
+    
+    public static final String FIND_BY_PLAYER_UNSEEN = "SELECT "
+            + GameNotificationTDG.COLUMNS + " FROM "
+            + GameNotificationTDG.TABLE_NAME
+            + " WHERE recipient=? AND seen = FALSE;";
+
+    public static ResultSet findByPlayerUnseen(long player) throws SQLException
+    {
+        Connection con = DbRegistry.getDbConnection();
+        PreparedStatement ps = con.prepareStatement(FIND_BY_PLAYER_UNSEEN);
+        ps.setLong(1, player);
+        
+        return ps.executeQuery();
+    }
 }

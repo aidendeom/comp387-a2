@@ -66,6 +66,19 @@ public class GameNotificationInputMapper implements IdentityBasedProducer
         }
     }
     
+    public static List<GameNotification> findUnseen(IPlayer p) throws MapperException
+    {
+        try
+        {
+            ResultSet rs = GameNotificationFinder.findByPlayerUnseen(p.getId());
+            return buildCollection(rs);
+        }
+        catch (SQLException e)
+        {
+            throw new MapperException(e);
+        }
+    }
+    
     public static List<GameNotification> findAll() throws MapperException
     {
         try

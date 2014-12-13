@@ -65,6 +65,19 @@ public class ChallengeNotificationInputMapper
         }
     }
     
+    public static List<ChallengeNotification> findUnseen(IPlayer p) throws MapperException
+    {
+        try
+        {
+            ResultSet rs = ChallengeNotificationFinder.findByPlayerUnseen(p.getId());
+            return buildCollection(rs);
+        }
+        catch (SQLException e)
+        {
+            throw new MapperException(e);
+        }
+    }
+    
     public static List<ChallengeNotification> findAll() throws MapperException
     {
         try
