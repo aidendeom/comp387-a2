@@ -60,6 +60,7 @@ public class RespondToChallengeCommand extends CheckersCommand {
 			//Do it
 			challenge.setStatus(status);
 			if(status.equals(ChallengeStatus.Accepted)) {
+			    ChallengeNotificationFactory.createNew(challenge.getChallenger(), challenge, ChallengeNotificationType.Accepted);
 				CheckerBoardFactory.createNew(currentPlayer, challenge.getChallenger());
 			}
 			else
