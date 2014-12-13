@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.dsrg.soenea.service.threadLocal.DbRegistry;
-import org.soen387.domain.model.notification.game.tdg.GameNotificationTDG;
 
 public class ChallengeNotificationFinder
 {
@@ -34,8 +33,8 @@ public class ChallengeNotificationFinder
     }
 
     public static final String FIND_BY_PLAYER = "SELECT "
-            + GameNotificationTDG.COLUMNS + " FROM "
-            + GameNotificationTDG.TABLE_NAME
+            + ChallengeNotificationTDG.COLUMNS + " FROM "
+            + ChallengeNotificationTDG.TABLE_NAME
             + " WHERE recipient=?;";
 
     public static ResultSet findByPlayer(long player) throws SQLException
@@ -48,8 +47,8 @@ public class ChallengeNotificationFinder
     }
     
     public static final String FIND_BY_PLAYER_UNSEEN = "SELECT "
-            + GameNotificationTDG.COLUMNS + " FROM "
-            + GameNotificationTDG.TABLE_NAME
+            + ChallengeNotificationTDG.COLUMNS + " FROM "
+            + ChallengeNotificationTDG.TABLE_NAME
             + " WHERE recipient=? AND seen = FALSE;";
     
     public static ResultSet findByPlayerUnseen(long player) throws SQLException
