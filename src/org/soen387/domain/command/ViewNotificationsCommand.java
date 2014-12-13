@@ -26,6 +26,8 @@ public class ViewNotificationsCommand extends CheckersCommand
     @SetInRequestAttribute
     public List<Notification> notifications;
     
+    public boolean onlyUnseen = false;
+    
     @Override
     public void process() throws CommandException
     {
@@ -34,8 +36,20 @@ public class ViewNotificationsCommand extends CheckersCommand
             if (currentPlayer == null)
                 throw new NeedToBeLoggedInException();
             
-            List<GameNotification> gameNotifications = GameNotificationInputMapper.find(currentPlayer);
-            List<ChallengeNotification> challengeNotifications = ChallengeNotificationInputMapper.find(currentPlayer);
+            
+            List<GameNotification> gameNotifications = null;
+            List<ChallengeNotification> challengeNotifications = null;
+            
+            if (onlyUnseen)
+            {
+                gameNotifications = GameNotificationInputMapper.findUnseen(currentPlayer);
+                challengeNotifications = ChallengeNotificationInputMapper.findUnseen(currentPlayer);
+            }
+            else
+            {
+                gameNotifications = GameNotificationInputMapper.find(currentPlayer);
+                challengeNotifications = ChallengeNotificationInputMapper.find(currentPlayer);
+            }
             
             ArrayList<Notification> l = new ArrayList<Notification>(gameNotifications.size() + challengeNotifications.size());
             
