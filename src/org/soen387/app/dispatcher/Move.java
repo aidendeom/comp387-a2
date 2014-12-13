@@ -9,10 +9,7 @@ import org.dsrg.soenea.domain.MapperException;
 import org.dsrg.soenea.domain.command.CommandException;
 import org.dsrg.soenea.uow.UoW;
 import org.soen387.domain.command.MoveCommand;
-import org.soen387.domain.command.exception.CannotChallengeSelfException;
 import org.soen387.domain.command.exception.NeedToBeLoggedInException;
-import org.soen387.domain.command.exception.OnlyOneOngoingGameBetweenPlayersException;
-import org.soen387.domain.command.exception.OnlyOneOpenChallengeBetweenPlayersException;
 
 public class Move extends CheckersDispatcher{
 
