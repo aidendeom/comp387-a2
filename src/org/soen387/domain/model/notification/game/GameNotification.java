@@ -16,6 +16,12 @@ public class GameNotification extends Notification
         this.board = board;
         this.type = type;
     }
+    
+    @Override
+    public String getTarget()
+    {
+        return "game=\"" + board.getId() + "\"";
+    };
 
     public ICheckerBoard getBoard()
     {

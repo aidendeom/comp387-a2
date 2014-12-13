@@ -20,6 +20,11 @@ public enum ChallengeNotificationType
         return numVal;
     }
     
+    public String getStringVal()
+    {
+        return this.toString().toLowerCase();
+    }
+    
     public static ChallengeNotificationType fromNumVal(int numVal)
     {
         return values[numVal];

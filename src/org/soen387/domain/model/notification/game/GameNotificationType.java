@@ -23,6 +23,11 @@ public enum GameNotificationType
         return numVal;
     }
     
+    public String getStringVal()
+    {
+        return this.toString().toLowerCase();
+    }
+    
     public static GameNotificationType fromNumVal(int numVal)
     {
         return values[numVal];

@@ -1,5 +1,7 @@
 package org.soen387.domain.command;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.dsrg.soenea.domain.MapperException;
@@ -8,6 +10,7 @@ import org.dsrg.soenea.domain.command.impl.annotation.SetInRequestAttribute;
 import org.dsrg.soenea.domain.helper.Helper;
 import org.dsrg.soenea.uow.UoW;
 import org.soen387.domain.command.exception.NeedToBeLoggedInException;
+import org.soen387.domain.model.notification.Notification;
 import org.soen387.domain.model.notification.challenge.ChallengeNotification;
 import org.soen387.domain.model.notification.challenge.mapper.ChallengeNotificationInputMapper;
 import org.soen387.domain.model.notification.game.GameNotification;
@@ -19,44 +22,72 @@ public class ViewNotificationsCommand extends CheckersCommand
     {
         super(helper);
     }
-
-    @SetInRequestAttribute
-    public List<GameNotification> gameNotifications;
     
     @SetInRequestAttribute
-    public List<ChallengeNotification> challengeNotifications;
+    public List<Notification> notifications;
     
     @Override
     public void process() throws CommandException
     {
         try
-        {
+        {         
             if (currentPlayer == null)
                 throw new NeedToBeLoggedInException();
             
-            gameNotifications = GameNotificationInputMapper.find(currentPlayer);
-            challengeNotifications = ChallengeNotificationInputMapper.find(currentPlayer);
+            List<GameNotification> gameNotifications = GameNotificationInputMapper.find(currentPlayer);
+            List<ChallengeNotification> challengeNotifications = ChallengeNotificationInputMapper.find(currentPlayer);
+            
+            ArrayList<Notification> l = new ArrayList<Notification>(gameNotifications.size() + challengeNotifications.size());
             
             for (GameNotification g : gameNotifications)
             {
-                if (!g.isSeen())
-                {
-                    g.setSeen(true);
-                    UoW.getCurrent().registerDirty(g);
-                }
+                l.add(g);
             }
             for (ChallengeNotification c : challengeNotifications)
             {
-                if (!c.isSeen())
+                l.add(c);
+            }
+            
+            l.sort(Comparator.comparing(Notification::getId));
+            
+            int length = 10;
+            int page = 1;
+            
+            if (helper.getAttribute("length") != null)
+                length = helper.getInt("length");
+            if (helper.getAttribute("page") != null)
+                page = helper.getInt("page");
+            
+            length = clamp(length, 1, l.size());
+            page = clamp(page, 1, (int)Math.ceil((float)l.size() / length));
+            
+            notifications = new ArrayList<Notification>(length);
+            int startIdx = (page - 1) * length;
+            for (int i = startIdx; i < startIdx + length; i++)
+            {
+                notifications.add(l.get(i));
+            }
+            
+            for (Notification n : notifications)
+            {
+                if (!n.isSeen())
                 {
-                    c.setSeen(true);
-                    UoW.getCurrent().registerDirty(c);
+                    n.setSeen(true);
+                    UoW.getCurrent().registerDirty(n);
                 }
             }
+            
+            helper.setRequestAttribute("page", page);
+            helper.setRequestAttribute("length", length);
         }
         catch (MapperException e)
         {
             throw new CommandException(e);
         }
+    }
+    
+    private int clamp(int n, int lower, int upper)
+    {
+        return Math.max(Math.min(n, upper), lower);
     }
 }

@@ -17,6 +17,12 @@ public class ChallengeNotification extends Notification
         this.setChallenge(challenge);
         this.type = type;
     }
+    
+    @Override
+    public String getTarget()
+    {
+        return "challenge=\"" + challenge.getId() + "\"";
+    };
 
     public IChallenge getChallenge()
     {
