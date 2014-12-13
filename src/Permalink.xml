@@ -47,4 +47,8 @@
         <pattern>Game/UnseenNotifications</pattern>
         <dispatcher>org.soen387.app.dispatcher.ViewUnseenNotifications</dispatcher>
     </Permalink>
+        <Permalink>
+        <pattern>Game/Notifications</pattern>
+        <dispatcher>org.soen387.app.dispatcher.ViewNotifications</dispatcher>
+    </Permalink>
 </permalinks>
