@@ -43,4 +43,8 @@
         <dispatcher>org.soen387.app.dispatcher.RespondToChallenge</dispatcher>
         <attribute name="challenge" />
     </Permalink>
+    <Permalink>
+        <pattern>Game/UnseenNotifications</pattern>
+        <dispatcher>org.soen387.app.dispatcher.ViewUnseenNotifications</dispatcher>
+    </Permalink>
 </permalinks>
