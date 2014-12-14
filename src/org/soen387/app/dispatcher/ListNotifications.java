@@ -11,17 +11,14 @@ import org.dsrg.soenea.uow.UoW;
 import org.soen387.domain.command.ListNotificationsCommand;
 import org.soen387.domain.command.exception.NeedToBeLoggedInException;
 
-public class ViewUnseenNotifications extends CheckersDispatcher
+public class ListNotifications extends CheckersDispatcher
 {
     @Override
     public void execute() throws ServletException, IOException
     {
         try
         {
-            ListNotificationsCommand c = new ListNotificationsCommand(myHelper);
-            c.onlyUnseen = true;
-            c.execute();
-            
+            new ListNotificationsCommand(myHelper).execute();
             UoW.getCurrent().commit();
             forward("notifications.jsp");
         }
