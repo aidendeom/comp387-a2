@@ -8,7 +8,6 @@ import org.dsrg.soenea.domain.MapperException;
 import org.dsrg.soenea.domain.command.CommandException;
 import org.dsrg.soenea.domain.command.impl.annotation.SetInRequestAttribute;
 import org.dsrg.soenea.domain.helper.Helper;
-import org.dsrg.soenea.uow.UoW;
 import org.soen387.domain.command.exception.NeedToBeLoggedInException;
 import org.soen387.domain.model.notification.Notification;
 import org.soen387.domain.model.notification.challenge.ChallengeNotification;
@@ -16,9 +15,9 @@ import org.soen387.domain.model.notification.challenge.mapper.ChallengeNotificat
 import org.soen387.domain.model.notification.game.GameNotification;
 import org.soen387.domain.model.notification.game.mapper.GameNotificationInputMapper;
 
-public class ViewNotificationsCommand extends CheckersCommand
+public class ListNotificationsCommand extends CheckersCommand
 {
-    public ViewNotificationsCommand(Helper helper)
+    public ListNotificationsCommand(Helper helper)
     {
         super(helper);
     }

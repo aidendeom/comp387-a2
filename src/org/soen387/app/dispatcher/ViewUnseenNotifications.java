@@ -8,7 +8,7 @@ import javax.servlet.ServletException;
 import org.dsrg.soenea.domain.MapperException;
 import org.dsrg.soenea.domain.command.CommandException;
 import org.dsrg.soenea.uow.UoW;
-import org.soen387.domain.command.ViewNotificationsCommand;
+import org.soen387.domain.command.ListNotificationsCommand;
 import org.soen387.domain.command.exception.NeedToBeLoggedInException;
 
 public class ViewUnseenNotifications extends CheckersDispatcher
@@ -18,7 +18,7 @@ public class ViewUnseenNotifications extends CheckersDispatcher
     {
         try
         {
-            ViewNotificationsCommand c = new ViewNotificationsCommand(myHelper);
+            ListNotificationsCommand c = new ListNotificationsCommand(myHelper);
             c.onlyUnseen = true;
             c.execute();
             
