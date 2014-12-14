@@ -5,7 +5,7 @@
         <attribute name="checkerboard" />
     </Permalink>
     <Permalink>
-        <pattern>Game/Challenge/</pattern>
+        <pattern>Game/ListChallenges</pattern>
         <dispatcher>org.soen387.app.dispatcher.ListChallenges</dispatcher>
     </Permalink>    
     <Permalink>
@@ -60,5 +60,9 @@
         <pattern>Game/Notifications/(\d*)/Delete</pattern>
         <dispatcher>org.soen387.app.dispatcher.DeleteNotification</dispatcher>
         <attribute name="notificationID" />
+    </Permalink>
+        <Permalink>
+        <pattern>Game/DeleteAccount</pattern>
+        <dispatcher>org.soen387.app.dispatcher.DeletePlayer</dispatcher>
     </Permalink>
 </permalinks>

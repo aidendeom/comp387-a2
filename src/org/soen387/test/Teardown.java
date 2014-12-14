@@ -19,6 +19,7 @@ public class Teardown {
 			PlayerTDG.dropTable();
 			ChallengeTDG.dropTable();
 			UserTDG.dropTable();
+			UserTDG.dropUserRoleTable();
 			GameNotificationTDG.dropTable();
 			ChallengeNotificationTDG.dropTable();
 		} catch (SQLException e) {

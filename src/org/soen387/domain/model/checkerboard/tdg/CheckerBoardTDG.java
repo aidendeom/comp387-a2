@@ -54,7 +54,7 @@ public class CheckerBoardTDG {
 		return ps.executeUpdate();
 	}
 	
-	public static final String UPDATE = "UPDATE " + TABLE_NAME + " set version = version+1, status=?, pieces=?, first=?, second=?, current=? "
+	public static final String UPDATE = "UPDATE " + TABLE_NAME + " set version = version+1, status=?, pieces=?, first_player=?, second_player=?, current_player=? "
 			+ " WHERE id=? AND version=?;";
 	public static int update(long id, long version, int status, String pieces, long first, long second, long current) throws SQLException {
 		Connection con = DbRegistry.getDbConnection();

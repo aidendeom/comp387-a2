@@ -19,6 +19,7 @@ public class Setup {
 			PlayerTDG.createTable();
 			ChallengeTDG.createTable();
 			UserTDG.createTable();
+			UserTDG.createUserRoleTable();
 			GameNotificationTDG.createTable();
 			ChallengeNotificationTDG.createTable();
 		} catch (SQLException e) {

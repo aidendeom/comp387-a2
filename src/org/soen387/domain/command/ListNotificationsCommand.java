@@ -56,7 +56,7 @@ public class ListNotificationsCommand extends CheckersCommand
             
             if (numNotifications > 0)
             {
-                ArrayList<Notification> l = new ArrayList<Notification>(gameNotifications.size() + challengeNotifications.size());
+                ArrayList<Notification> l = new ArrayList<Notification>(numNotifications);
                 
                 for (GameNotification g : gameNotifications)
                 {
@@ -69,20 +69,20 @@ public class ListNotificationsCommand extends CheckersCommand
                 
                 l.sort(Comparator.comparing(Notification::getId));
                 
-                int length = 10;
+                int rows = 10;
                 
                 
-                if (helper.getAttribute("length") != null)
-                    length = helper.getInt("length");
-                if (helper.getAttribute("page") != null)
-                    page = helper.getInt("page");
+                if (helper.getAttribute("r") != null)
+                    rows = helper.getInt("r");
+                if (helper.getAttribute("p") != null)
+                    page = helper.getInt("p");
                 
-                length = clamp(length, 1, l.size());
-                page = clamp(page, 1, (int)Math.ceil((float)l.size() / length));
+                rows = clamp(rows, 1, l.size());
+                page = clamp(page, 1, (int)Math.ceil((float)l.size() / rows));
                 
-                notifications = new ArrayList<Notification>(length);
-                int startIdx = (page - 1) * length;
-                for (int i = startIdx; i < startIdx + length; i++)
+                notifications = new ArrayList<Notification>(rows);
+                int startIdx = (page - 1) * rows;
+                for (int i = startIdx; i < startIdx + rows; i++)
                 {
                     notifications.add(l.get(i));
                 }

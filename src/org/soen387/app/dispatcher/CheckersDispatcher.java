@@ -18,11 +18,12 @@ public abstract class CheckersDispatcher extends Dispatcher {
 	@Override
 	public void init(HttpServletRequest req, HttpServletResponse res) {
 		super.init(req, res);
-		if (myHelper.getString("mode").equalsIgnoreCase("xml")) {
+		String mode = myHelper.getString("mode");
+		if (mode != null && mode.equalsIgnoreCase("xml")) {
 			isXML = true;
 		}
 		// TODO: Remove this!!!!
-		//isXML = true;
+		isXML = true;
 		isSubmission = !myRequest.getMethod().equalsIgnoreCase("GET");
 	}
 
