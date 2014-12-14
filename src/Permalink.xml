@@ -61,4 +61,8 @@
         <dispatcher>org.soen387.app.dispatcher.DeleteNotification</dispatcher>
         <attribute name="notificationID" />
     </Permalink>
+        <Permalink>
+        <pattern>Game/DeleteAccount</pattern>
+        <dispatcher>org.soen387.app.dispatcher.DeletePlayer</dispatcher>
+    </Permalink>
 </permalinks>
