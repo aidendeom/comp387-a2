@@ -8,7 +8,6 @@ import org.dsrg.soenea.domain.MapperException;
 import org.dsrg.soenea.domain.command.CommandException;
 import org.dsrg.soenea.domain.command.impl.annotation.SetInRequestAttribute;
 import org.dsrg.soenea.domain.helper.Helper;
-import org.dsrg.soenea.uow.UoW;
 import org.soen387.domain.command.exception.NeedToBeLoggedInException;
 import org.soen387.domain.model.notification.Notification;
 import org.soen387.domain.model.notification.challenge.ChallengeNotification;
@@ -16,9 +15,9 @@ import org.soen387.domain.model.notification.challenge.mapper.ChallengeNotificat
 import org.soen387.domain.model.notification.game.GameNotification;
 import org.soen387.domain.model.notification.game.mapper.GameNotificationInputMapper;
 
-public class ViewNotificationsCommand extends CheckersCommand
+public class ListNotificationsCommand extends CheckersCommand
 {
-    public ViewNotificationsCommand(Helper helper)
+    public ListNotificationsCommand(Helper helper)
     {
         super(helper);
     }
@@ -51,48 +50,46 @@ public class ViewNotificationsCommand extends CheckersCommand
                 challengeNotifications = ChallengeNotificationInputMapper.find(currentPlayer);
             }
             
-            ArrayList<Notification> l = new ArrayList<Notification>(gameNotifications.size() + challengeNotifications.size());
+            int numNotifications = gameNotifications.size() + challengeNotifications.size();
             
-            for (GameNotification g : gameNotifications)
-            {
-                l.add(g);
-            }
-            for (ChallengeNotification c : challengeNotifications)
-            {
-                l.add(c);
-            }
-            
-            l.sort(Comparator.comparing(Notification::getId));
-            
-            int length = 10;
             int page = 1;
             
-            if (helper.getAttribute("length") != null)
-                length = helper.getInt("length");
-            if (helper.getAttribute("page") != null)
-                page = helper.getInt("page");
-            
-            length = clamp(length, 1, l.size());
-            page = clamp(page, 1, (int)Math.ceil((float)l.size() / length));
-            
-            notifications = new ArrayList<Notification>(length);
-            int startIdx = (page - 1) * length;
-            for (int i = startIdx; i < startIdx + length; i++)
+            if (numNotifications > 0)
             {
-                notifications.add(l.get(i));
-            }
-            
-            for (Notification n : notifications)
-            {
-                if (!n.isSeen())
+                ArrayList<Notification> l = new ArrayList<Notification>(gameNotifications.size() + challengeNotifications.size());
+                
+                for (GameNotification g : gameNotifications)
                 {
-                    n.setSeen(true);
-                    UoW.getCurrent().registerDirty(n);
+                    l.add(g);
+                }
+                for (ChallengeNotification c : challengeNotifications)
+                {
+                    l.add(c);
+                }
+                
+                l.sort(Comparator.comparing(Notification::getId));
+                
+                int length = 10;
+                
+                
+                if (helper.getAttribute("length") != null)
+                    length = helper.getInt("length");
+                if (helper.getAttribute("page") != null)
+                    page = helper.getInt("page");
+                
+                length = clamp(length, 1, l.size());
+                page = clamp(page, 1, (int)Math.ceil((float)l.size() / length));
+                
+                notifications = new ArrayList<Notification>(length);
+                int startIdx = (page - 1) * length;
+                for (int i = startIdx; i < startIdx + length; i++)
+                {
+                    notifications.add(l.get(i));
                 }
             }
             
             helper.setRequestAttribute("page", page);
-            helper.setRequestAttribute("length", length);
+            helper.setRequestAttribute("count", numNotifications);
         }
         catch (MapperException e)
         {

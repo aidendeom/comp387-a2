@@ -8,30 +8,31 @@ import javax.servlet.ServletException;
 import org.dsrg.soenea.domain.MapperException;
 import org.dsrg.soenea.domain.command.CommandException;
 import org.dsrg.soenea.uow.UoW;
-import org.soen387.domain.command.ViewNotificationsCommand;
+import org.soen387.domain.command.SeeNotificationCommand;
 import org.soen387.domain.command.exception.NeedToBeLoggedInException;
 
-public class ViewNotifications extends CheckersDispatcher
+public class SeeNotification extends CheckersDispatcher
 {
     @Override
     public void execute() throws ServletException, IOException
     {
         try
         {
-            new ViewNotificationsCommand(myHelper).execute();
+            new SeeNotificationCommand(myHelper).execute();
             UoW.getCurrent().commit();
-            forward("notifications.jsp");
+            forward("viewnotification.jsp");
         }
         catch (NeedToBeLoggedInException e)
         {
-            fail("You need to be logged in to see your notifications");
+            fail("You need to be logged in to see a notification");
         }
         catch (CommandException e)
         {
             fail(e);
         }
-        catch (InstantiationException | IllegalAccessException | MapperException | SQLException e) {
-            fail(e); //UoW went to crap 
+        catch (InstantiationException | IllegalAccessException | MapperException | SQLException e)
+        {
+            fail(e); 
         }
     }
 }
