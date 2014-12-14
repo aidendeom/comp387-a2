@@ -1,6 +1,7 @@
 package org.soen387.test.ser;
 
 
+import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,11 @@ import org.apache.http.util.EntityUtils;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.custommonkey.xmlunit.exceptions.XpathException;
+import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.soen387.test.Setup;
+import org.soen387.test.Teardown;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -33,6 +38,115 @@ public class MarkedTestCheckers {
 	CloseableHttpClient httpclient = HttpClients.createDefault();
 	public final String BASE_URL = FieldMap.current.get().get("BASE_URL");
 	XPath xPath =  XPathFactory.newInstance().newXPath();
+	
+	
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		Teardown.main(null);
+		Setup.main(null);
+	}
+	
+	/*
+	 * 
+	 * New Tests
+	 * 
+	 */
+	@ScoreAnnotation(3)
+	@Test
+	public void testPlay() throws SAXException, IOException, XpathException, XPathExpressionException {
+		Document d = register("stuart", "stuart", "stuart", "stuartson", "stuart@fred.com", httpclient);
+		long stuartId = getPlayerId(d);
+		d = register("thomas", "thomas", "thomas", "thomasson", "thomas@fred.com", httpclient);
+		long thomasId = getPlayerId(d);
+		login("thomas", "thomas", httpclient);
+		
+		
+
+		d = challengePlayer(stuartId, httpclient);
+		long challengeId = getChallengeId(d);
+		int challengeVersion = getChallengeVersion(d);
+		
+		login("stuart", "stuart", httpclient);
+		respondToChallenge(challengeId, challengeVersion, true, httpclient);
+
+		d = listGames(httpclient);
+		int count = Integer.parseInt((String) xPath.evaluate("/checkers/games/@count", d, XPathConstants.STRING));
+		
+		d = listGames(0, count, httpclient);
+		long gameId = getGameId(d, stuartId, thomasId);
+		
+		
+		long gameVersion = getGameVersion(d, stuartId, thomasId);
+
+		
+		List<Point> moves = new ArrayList<Point>();
+		moves.add(new Point(0,2));
+		moves.add(new Point(1,3));
+		
+		playGame(gameId, gameVersion, moves, httpclient);
+
+		d = viewGame(gameId, httpclient);
+		XMLAssert.assertXpathExists("/checkers/game[@id='" + gameId + "']/currentPlayer[@refid='" + thomasId + "'] ", d);
+		
+	}
+	
+	@ScoreAnnotation(3)
+	@Test
+	public void testWithdraw() throws SAXException, IOException, XpathException, XPathExpressionException {
+		Document d = register("uther", "uther", "uther", "utherson", "uther@fred.com", httpclient);
+		long utherId = getPlayerId(d);
+		d = register("vince", "vince", "vince", "vinceson", "vince@fred.com", httpclient);
+		long vinceId = getPlayerId(d);
+		login("vince", "vince", httpclient);
+
+		d = challengePlayer(utherId, httpclient);
+		long challengeId = getChallengeId(d);
+		int challengeVersion = getChallengeVersion(d);
+		
+		d = withdrawFromChallenge(challengeId, challengeVersion, httpclient);
+		
+		d = listChallenges(httpclient);
+		int count = Integer.parseInt((String) xPath.evaluate("/checkers/challenges/@count", d, XPathConstants.STRING));
+		
+		d = listChallenges(0, count, httpclient);
+		
+		XMLAssert.assertXpathNotExists("/checkers/challenges/challenge/challengee[@refid='" + utherId + "'] ", d);
+	
+		
+	}
+	
+	//Test all the list pages, at least Players/Challenges/Games. Add a few of each, figure out how many there are total by checking the last page count and doing the math
+	//Then try to look when passing a different rowsPerPage, checking that count is correct, etc.
+	
+	//Should also have tests to make sure that they have more than one page after adding a bunch of stuff.
+	
+	//Should have tests that make sure the page count changes after adding 10 of something
+	@ScoreAnnotation(1)
+	@Test
+	public void testListPlayersPaged() throws SAXException, IOException, XpathException, XPathExpressionException {
+		register("welma", "welma", "welma", "welmason", "welma@fred.com", httpclient);
+		register("xerces", "xerces", "xerces", "xercesson", "xerces@fred.com", httpclient);
+		Document d = listPlayers(0, 2, httpclient);
+		//gather page count
+		int count = Integer.parseInt((String) xPath.evaluate("/checkers/players/@count", d, XPathConstants.STRING));
+		
+		//assert count
+		
+		register("welma2", "welma2", "welma2", "welma2son", "welma2@fred.com", httpclient);
+		register("xerces2", "xerces2", "xerces2", "xerces2son", "xerces2@fred.com", httpclient);
+		d = listPlayers(0, 2, httpclient);
+		
+		int count2 = Integer.parseInt((String) xPath.evaluate("/checkers/players/@count", d, XPathConstants.STRING));
+		
+		Assert.assertEquals(2, count2-count);
+	}
+	
+	
+	/*
+	 * 
+	 * Old Tests
+	 * 
+	 */
 	
 	@ScoreAnnotation(1)
 	@Test
@@ -87,22 +201,30 @@ public class MarkedTestCheckers {
 		d = login("bob", "bob", httpclient);
 		assertSuccess(d);
 		d = listPlayers(httpclient);
+		int count = Integer.parseInt((String) xPath.evaluate("/checkers/players/@count", d, XPathConstants.STRING));
+		
+		d = listPlayers(0, count, httpclient);
+		
 		XMLAssert.assertXpathExists("/checkers/players/player[@id='" + id + "']", d);
 	}
 	
-	@ScoreAnnotation(2)
+	@ScoreAnnotation(1)
 	@Test
-	public void testListUsers() throws SAXException, IOException, XpathException, XPathExpressionException {
+	public void testListPlayers() throws SAXException, IOException, XpathException, XPathExpressionException {
 		register("alice", "alice", "alice", "aliceson", "alice@fred.com", httpclient);
 		register("dora", "dora", "dora", "dorason", "dora@fred.com", httpclient);
+
 		Document d = listPlayers(httpclient);
+		int count = Integer.parseInt((String) xPath.evaluate("/checkers/players/@count", d, XPathConstants.STRING));
+		
+		d = listPlayers(0, count, httpclient);
 		XMLAssert.assertXpathExists("/checkers/players/player[@firstName='alice']", d);
 		XMLAssert.assertXpathExists("/checkers/players/player[@firstName='dora']", d);
 		assertSuccess(d);
 	}
 
 
-	@ScoreAnnotation(2)
+	@ScoreAnnotation(1)
 	@Test
 	public void testViewUserStats() throws SAXException, IOException, XpathException, XPathExpressionException {
 		Document d = register("elsa", "elsa", "elsa", "elsason", "elsa@fred.com", httpclient);
@@ -125,7 +247,7 @@ public class MarkedTestCheckers {
 		assertSuccess(d);
 	}
 	
-	@ScoreAnnotation(3)
+	@ScoreAnnotation(1)
 	@Test
 	public void testChallengeUser() throws SAXException, IOException, XpathException, XPathExpressionException {
 		Document d = register("hal", "hal", "hal", "halson", "hal@fred.com", httpclient);
@@ -137,6 +259,9 @@ public class MarkedTestCheckers {
 		long challengeId = getChallengeId(d);
 
 		d = listChallenges(httpclient);
+		int count = Integer.parseInt((String) xPath.evaluate("/checkers/challenges/@count", d, XPathConstants.STRING));
+		
+		d = listChallenges(0, count, httpclient);
 		
 		XMLAssert.assertXpathExists("/checkers/challenges/challenge[@id='" + challengeId + "'] ", d);
 		
@@ -144,7 +269,7 @@ public class MarkedTestCheckers {
 		assertSuccess(d);
 	}
 	
-	@ScoreAnnotation(2)
+	@ScoreAnnotation(1)
 	@Test
 	public void testCannotChallengeSelf() throws SAXException, IOException, XpathException, XPathExpressionException {
 		Document d = register("hal2", "hal2", "hal2", "halson2", "hal2@fred.com", httpclient);
@@ -155,7 +280,7 @@ public class MarkedTestCheckers {
 		assertFailure(d);
 	}
 	
-	@ScoreAnnotation(3)
+	@ScoreAnnotation(1)
 	@Test
 	public void testRespondToChallenge() throws SAXException, IOException, XpathException, XPathExpressionException {
 		Document d = register("jesse", "jesse", "jesse", "jesseson", "jesse@fred.com", httpclient);
@@ -176,12 +301,16 @@ public class MarkedTestCheckers {
 		
 		d = listChallenges(httpclient);
 		
+		int count = Integer.parseInt((String) xPath.evaluate("/checkers/challenges/@count", d, XPathConstants.STRING));
+		
+		d = listChallenges(0, count, httpclient);
+		
 		XMLAssert.assertXpathExists("/checkers/challenges/challenge[@id='" + challengeId + "' and @status='2'] ", d);
 		
 		assertSuccess(d);
 	}
 	
-	@ScoreAnnotation(2)
+	@ScoreAnnotation(1)
 	@Test
 	public void testCannotRespondToChallengeYouAreNotPartOf() throws SAXException, IOException, XpathException, XPathExpressionException {
 		Document d = register("jesse2", "jesse2", "jesse2", "jesseson2", "jesse2@fred.com", httpclient);
@@ -201,7 +330,7 @@ public class MarkedTestCheckers {
 		assertFailure(d);
 	}
 	
-	@ScoreAnnotation(2)
+	@ScoreAnnotation(1)
 	@Test
 	public void testCannotChallengeWithOpenChallenge() throws SAXException, IOException, XpathException, XPathExpressionException {
 		Document d = register("jesse4", "jesse4", "jesse4", "jesseson4", "jesse4@fred.com", httpclient);
@@ -278,7 +407,7 @@ public class MarkedTestCheckers {
 		assertFailure(d);
 	}
 	
-	@ScoreAnnotation(2)
+	@ScoreAnnotation(1)
 	@Test
 	public void testListGames() throws SAXException, IOException, XpathException, XPathExpressionException {
 		Document d = register("lisa", "lisa", "lisa", "lisason", "lisa@fred.com", httpclient);
@@ -309,6 +438,9 @@ public class MarkedTestCheckers {
 		logout(httpclient);
 		
 		d = listGames(httpclient);
+		int count = Integer.parseInt((String) xPath.evaluate("/checkers/games/@count", d, XPathConstants.STRING));
+		
+		d = listGames(0, count, httpclient);
 		
 		XMLAssert.assertXpathExists("/checkers/games/game/firstPlayer[@refid='" + lisaId + "'] ", d);
 		XMLAssert.assertXpathExists("/checkers/games/game/firstPlayer[@refid='" + masonId + "'] ", d);
@@ -319,7 +451,7 @@ public class MarkedTestCheckers {
 		assertSuccess(d);
 	}
 	
-	@ScoreAnnotation(2)
+	@ScoreAnnotation(1)
 	@Test
 	public void testViewGame() throws SAXException, IOException, XpathException, XPathExpressionException {
 		Document d = register("ollie", "ollie", "ollie", "ollieson", "ollie@fred.com", httpclient);
@@ -339,6 +471,10 @@ public class MarkedTestCheckers {
 
 		d = listGames(httpclient);
 		
+		int count = Integer.parseInt((String) xPath.evaluate("/checkers/games/@count", d, XPathConstants.STRING));
+		
+		d = listGames(0, count, httpclient);
+		
 		XMLAssert.assertXpathExists("/checkers/games/game/firstPlayer[@refid='" + ollieId + "']/../secondPlayer[@refid='" + percyId + "'] ", d);
 		long gameId = getGameId(d, ollieId, percyId);
 		
@@ -351,7 +487,7 @@ public class MarkedTestCheckers {
 		assertSuccess(d);
 	}
 	
-	@ScoreAnnotation(2)
+	@ScoreAnnotation(1)
 	@Test
 	public void testViewChallenges() throws SAXException, IOException, XpathException, XPathExpressionException {
 		Document d = register("q", "q", "q", "qson", "q@fred.com", httpclient);
@@ -360,12 +496,20 @@ public class MarkedTestCheckers {
 		long ryanId = getPlayerId(d);
 		login("ryan", "ryan", httpclient);
 		d = listChallenges(httpclient);
+		int count = Integer.parseInt((String) xPath.evaluate("/checkers/challenges/@count", d, XPathConstants.STRING));
+		
+		d = listChallenges(0, count, httpclient);
+		
 		XMLAssert.assertXpathNotExists("/checkers/challenges/challenge/challenger[@refid='" + ryanId + "'] ", d);
 		XMLAssert.assertXpathNotExists("/checkers/challenges/challenge/challengee[@refid='" + ryanId + "'] ", d);
 		
 		d = challengePlayer(qId, httpclient);
 
 		d = listChallenges(httpclient);
+		
+		count = Integer.parseInt((String) xPath.evaluate("/checkers/challenges/@count", d, XPathConstants.STRING));
+		
+		d = listChallenges(0, count, httpclient);
 		
 		XMLAssert.assertXpathExists("/checkers/challenges/challenge/challenger[@refid='" + ryanId + "'] ", d);
 		XMLAssert.assertXpathNotExists("/checkers/challenges/challenge/challengee[@refid='" + ryanId + "'] ", d);
@@ -440,6 +584,23 @@ public class MarkedTestCheckers {
 		return XMLUnit.buildControlDocument(response);
 	}
 	
+	public final String LIST_PLAYERS_PAGED = BASE_URL+FieldMap.current.get().get("LIST_PLAYERS_PAGED_PATH");
+	public Document listPlayers(int page, int rowsPerPAge, CloseableHttpClient closeableHttpClient) throws ParseException, ClientProtocolException, IOException, SAXException {
+		
+		StringTemplate template = new StringTemplate();
+		template.setTemplate(LIST_PLAYERS_PAGED);
+		template.setAttribute("page", page+"");
+		template.setAttribute("rows", rowsPerPAge+"");
+		
+		HttpGet httpGet = new HttpGet(template.toString()+"?"+FieldMap.current.get().get("XML_PARAM")+"="+FieldMap.current.get().get("XML_VALUE"));
+		CloseableHttpResponse requestResponse = closeableHttpClient.execute(httpGet);
+		String response = EntityUtils.toString(requestResponse.getEntity());
+		String details = httpGet.toString();
+		System.out.println(details);
+		requestResponse.close();
+		return XMLUnit.buildControlDocument(response);
+	}
+	
 	public final String VIEW_PLAYER_STATS = BASE_URL+FieldMap.current.get().get("VIEW_PLAYER_STATS_PATH");
 	public Document viewPlayerStats(long id, CloseableHttpClient closeableHttpClient) throws ParseException, ClientProtocolException, IOException, SAXException {
 		StringTemplate template = new StringTemplate();
@@ -496,6 +657,26 @@ public class MarkedTestCheckers {
 		return XMLUnit.buildControlDocument(response);
 	}	
 	
+	public final String WITHDRAW_FRON_CHALLNGE = BASE_URL+FieldMap.current.get().get("WITHDRAW_FRON_CHALLNGE_PATH");
+	public Document withdrawFromChallenge(long challenge, int version, CloseableHttpClient closeableHttpClient) throws ParseException, ClientProtocolException, IOException, SAXException {
+		StringTemplate template = new StringTemplate();
+		template.setTemplate(WITHDRAW_FRON_CHALLNGE);
+		template.setAttribute("id", challenge+"");
+		
+		HttpPost httpPost = new HttpPost(template.toString());
+		List <NameValuePair> nvps = new ArrayList <NameValuePair>();
+		nvps.add(new BasicNameValuePair(FieldMap.current.get().get("XML_PARAM"), FieldMap.current.get().get("XML_VALUE")));
+		nvps.add(new BasicNameValuePair(FieldMap.current.get().get("CHALLENGE_VERSION_PARAM"), ""+version));
+		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+		CloseableHttpResponse requestResponse = closeableHttpClient.execute(httpPost);
+		String response = EntityUtils.toString(requestResponse.getEntity());
+		String details = prettyPrintPost(httpPost, nvps, response);
+		System.out.println(details);
+		requestResponse.close();
+		return XMLUnit.buildControlDocument(response);
+	}
+	
+	
 	public final String LIST_GAMES = BASE_URL+FieldMap.current.get().get("LIST_GAMES_PATH");
 	public Document listGames(CloseableHttpClient closeableHttpClient) throws ParseException, ClientProtocolException, IOException, SAXException {
 		
@@ -506,6 +687,23 @@ public class MarkedTestCheckers {
 		CloseableHttpResponse requestResponse = closeableHttpClient.execute(httpPost);
 		String response = EntityUtils.toString(requestResponse.getEntity());
 		String details = prettyPrintPost(httpPost, nvps, response);
+		System.out.println(details);
+		requestResponse.close();
+		return XMLUnit.buildControlDocument(response);
+	}
+	
+	public final String LIST_GAMES_PAGED = BASE_URL+FieldMap.current.get().get("LIST_GAMES_PAGED_PATH");
+	public Document listGames(int page, int rowsPerPAge, CloseableHttpClient closeableHttpClient) throws ParseException, ClientProtocolException, IOException, SAXException {
+		
+		StringTemplate template = new StringTemplate();
+		template.setTemplate(LIST_GAMES_PAGED);
+		template.setAttribute("page", page+"");
+		template.setAttribute("rows", rowsPerPAge+"");
+		
+		HttpGet httpGet = new HttpGet(template.toString()+"?"+FieldMap.current.get().get("XML_PARAM")+"="+FieldMap.current.get().get("XML_VALUE"));
+		CloseableHttpResponse requestResponse = closeableHttpClient.execute(httpGet);
+		String response = EntityUtils.toString(requestResponse.getEntity());
+		String details = httpGet.toString();
 		System.out.println(details);
 		requestResponse.close();
 		return XMLUnit.buildControlDocument(response);
@@ -541,6 +739,58 @@ public class MarkedTestCheckers {
 		return XMLUnit.buildControlDocument(response);
 	}
 	
+	public final String LIST_CHALLENGES_PAGED = BASE_URL+FieldMap.current.get().get("LIST_CHALLENGES_PAGED_PATH");
+	public Document listChallenges(int page, int rowsPerPAge, CloseableHttpClient closeableHttpClient) throws ParseException, ClientProtocolException, IOException, SAXException {
+		
+		StringTemplate template = new StringTemplate();
+		template.setTemplate(LIST_CHALLENGES_PAGED);
+		template.setAttribute("page", page+"");
+		template.setAttribute("rows", rowsPerPAge+"");
+		
+		HttpGet httpGet = new HttpGet(template.toString()+"?"+FieldMap.current.get().get("XML_PARAM")+"="+FieldMap.current.get().get("XML_VALUE"));
+		CloseableHttpResponse requestResponse = closeableHttpClient.execute(httpGet);
+		String response = EntityUtils.toString(requestResponse.getEntity());
+		String details = httpGet.toString();
+		System.out.println(details);
+		requestResponse.close();
+		return XMLUnit.buildControlDocument(response);
+	}
+	
+	public final String PLAY_GAME = BASE_URL+FieldMap.current.get().get("PLAY_GAME_PATH");
+	public Document playGame(long game, long version, List<Point> moves, CloseableHttpClient closeableHttpClient) throws ParseException, ClientProtocolException, IOException, SAXException {
+		StringTemplate template = new StringTemplate();
+		template.setTemplate(PLAY_GAME);
+		template.setAttribute("id", game+"");
+		int offset = Integer.parseInt(FieldMap.current.get().get("GAME_X_Y_VALUE_BASE"));
+		boolean startSeparate = Boolean.parseBoolean(FieldMap.current.get().get("GAME_START_X_Y_SEPARATE_PARAMS"));
+		
+
+		
+		System.out.println("<<<<<<<< " + PLAY_GAME);
+		
+		HttpPost httpPost = new HttpPost(template.toString());
+		List <NameValuePair> nvps = new ArrayList <NameValuePair>();
+		nvps.add(new BasicNameValuePair(FieldMap.current.get().get("XML_PARAM"), FieldMap.current.get().get("XML_VALUE")));
+		nvps.add(new BasicNameValuePair(FieldMap.current.get().get("GAME_VERSION_PARAM"), ""+version));
+		
+		for(int i = 0; i < (moves.size()-(startSeparate?1:0)); i++) {
+			nvps.add(new BasicNameValuePair(FieldMap.current.get().get("GAME_X_ARRAY_PARAM"), ""+moves.get(i+(startSeparate?1:0)).x));
+			nvps.add(new BasicNameValuePair(FieldMap.current.get().get("GAME_Y_ARRAY_PARAM"), ""+moves.get(i+(startSeparate?1:0)).y));
+		}
+		if(startSeparate) {
+			nvps.add(new BasicNameValuePair(FieldMap.current.get().get("GAME_START_X_ARRAY_PARAM"), ""+moves.get(0).x));
+			nvps.add(new BasicNameValuePair(FieldMap.current.get().get("GAME_START_Y_ARRAY_PARAM"), ""+moves.get(0).y));
+		}
+		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+		CloseableHttpResponse requestResponse = closeableHttpClient.execute(httpPost);
+		String response = EntityUtils.toString(requestResponse.getEntity());
+		String details = prettyPrintPost(httpPost, nvps, response);
+		System.out.println(details);
+		requestResponse.close();
+		return XMLUnit.buildControlDocument(response);
+	}
+	
+	
 	private String prettyPrintPost(HttpPost httpPost, List<NameValuePair> nvps,
 			String response) {
 		StringBuilder sb = new StringBuilder();
@@ -549,7 +799,7 @@ public class MarkedTestCheckers {
 		for(NameValuePair nvp: nvps) {
 			sb.append("\t" + nvp.toString()+"\n");
 		}
-		
+		System.out.println(sb);
 		sb.append("******Response"+"\n");
 		sb.append(response);
 		return  FieldMap.current.get().get("DEBUG").equals("true")?sb.toString():"";
@@ -559,8 +809,15 @@ public class MarkedTestCheckers {
 		return Long.parseLong((String) xPath.evaluate("/checkers/player/@id", d, XPathConstants.STRING));
 	}
 	
+	/*
+	 * Problematic because we can start a new game when the old one was finished... theoretically 
+	 */
 	private long getGameId(Document d, long firstPlayer, long secondPlayer) throws NumberFormatException, XPathExpressionException {
 		return Long.parseLong((String) xPath.evaluate("/checkers/games/game/firstPlayer[@refid='" + firstPlayer + "']/../secondPlayer[@refid='" + secondPlayer + "']/../@id", d, XPathConstants.STRING));
+	}
+	
+	private long getGameVersion(Document d, long firstPlayer, long secondPlayer) throws NumberFormatException, XPathExpressionException {
+		return Long.parseLong((String) xPath.evaluate("/checkers/games/game/firstPlayer[@refid='" + firstPlayer + "']/../secondPlayer[@refid='" + secondPlayer + "']/../@version", d, XPathConstants.STRING));
 	}
 	
 	private long getChallengeId(Document d) throws NumberFormatException, XPathExpressionException {
@@ -581,5 +838,4 @@ public class MarkedTestCheckers {
 
 	
 }
-
 

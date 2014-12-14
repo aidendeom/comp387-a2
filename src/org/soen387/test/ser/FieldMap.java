@@ -18,7 +18,7 @@ public class FieldMap extends ThreadLocal<Map<String, String>> {
 		 * This is the URL for your application. Note that it should have no trailing slash
 		 * 
 		 */
-		myMap.put("BASE_URL", "http://localhost:8080/CheckersGame");
+		myMap.put("BASE_URL", "http://localhost:8080/soen387-a2");
 
 		/*
 		 * 
@@ -61,7 +61,9 @@ public class FieldMap extends ThreadLocal<Map<String, String>> {
 		myMap.put("EMAIL_PARAM", "email");
 		
 		//UC 4
-		myMap.put("LIST_PLAYERS_PATH", "/Game/ListPlayers");
+		myMap.put("LIST_PLAYERS_PATH", "/Game/Player/");
+		myMap.put("LIST_PLAYERS_PAGED_PATH", "/Game/Player/p$page$r$rows$");
+
 		
 		//UC 5
 		myMap.put("VIEW_PLAYER_STATS_PATH", "/Game/Player/$id$");
@@ -83,13 +85,31 @@ public class FieldMap extends ThreadLocal<Map<String, String>> {
 		myMap.put("CHALLENGE_REFUSE_VALUE", "2");
 		
 		//UC 8
-		myMap.put("LIST_GAMES_PATH", "/Game/ListGames");
+		myMap.put("LIST_GAMES_PATH", "/Game/Board/");
+		myMap.put("LIST_GAMES_PAGED_PATH", "/Game/Board/p$page$r$rows$");
+		
 		
 		//UC 9
 		myMap.put("VIEW_GAME_PATH", "/Game/Board/$id$");
 		
 		//UC 10
 		myMap.put("LIST_CHALLENGES_PATH", "/Game/Challenge/");
+		myMap.put("LIST_CHALLENGES_PAGED_PATH", "/Game/Challenge/p$page$r$rows$");
+
+		//UC 11
+		myMap.put("PLAY_GAME_PATH", "/Game/Board/$id$");
+		myMap.put("GAME_X_Y_VALUE_BASE", "0"); //Either 0 or 1-based, I default to 0, but will convert up
+		myMap.put("GAME_START_X_Y_SEPARATE_PARAMS", "false"); //If you submit x and you separately, make this true
+		myMap.put("GAME_X_ARRAY_PARAM", "x");
+		myMap.put("GAME_Y_ARRAY_PARAM", "y");
+		//myMap.put("GAME_START_X_ARRAY_PARAM", "startx"); //If you said true for GAME_START_X_Y_SEPARATE_PARAMS
+		//myMap.put("GAME_START_Y_ARRAY_PARAM", "starty");
+		myMap.put("GAME_VERSION_PARAM", "version");
+		
+		myMap.put("WITHDRAW_FRON_CHALLNGE_PATH", "/Game/Challenge/$id$/Withdraw");
+		//Uses CHALLENGE_VERSION_PARAM for version
+		
+		myMap.put("DEBUG", "true");
 		
 		return myMap;
 	}
