@@ -87,15 +87,6 @@ public class ViewNotificationsCommand extends CheckersCommand
                 {
                     notifications.add(l.get(i));
                 }
-                
-                for (Notification n : notifications)
-                {
-                    if (!n.isSeen())
-                    {
-                        n.setSeen(true);
-                        UoW.getCurrent().registerDirty(n);
-                    }
-                }
             }
             
             helper.setRequestAttribute("page", page);
