@@ -45,15 +45,20 @@
     </Permalink>
     <Permalink>
         <pattern>Game/Notifications/Unseen</pattern>
-        <dispatcher>org.soen387.app.dispatcher.ViewUnseenNotifications</dispatcher>
+        <dispatcher>org.soen387.app.dispatcher.ListUnseenNotifications</dispatcher>
     </Permalink>
     <Permalink>
         <pattern>Game/Notifications</pattern>
-        <dispatcher>org.soen387.app.dispatcher.ViewNotifications</dispatcher>
+        <dispatcher>org.soen387.app.dispatcher.ListNotifications</dispatcher>
+    </Permalink>
+    <Permalink>
+        <pattern>Game/Notifications/(\d*)</pattern>
+        <dispatcher>org.soen387.app.dispatcher.SeeNotification</dispatcher>
+        <attribute name="notificationID" />
     </Permalink>
     <Permalink>
         <pattern>Game/Notifications/(\d*)/Delete</pattern>
         <dispatcher>org.soen387.app.dispatcher.DeleteNotification</dispatcher>
-        <aatribute name="notificationID" />
+        <attribute name="notificationID" />
     </Permalink>
 </permalinks>

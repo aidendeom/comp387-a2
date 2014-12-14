@@ -7,7 +7,6 @@ import org.dsrg.soenea.domain.mapper.GenericOutputMapper;
 import org.dsrg.soenea.domain.mapper.LostUpdateException;
 import org.soen387.domain.model.notification.challenge.ChallengeNotification;
 import org.soen387.domain.model.notification.challenge.tdg.ChallengeNotificationTDG;
-import org.soen387.domain.model.notification.game.tdg.GameNotificationTDG;
 
 public class ChallengeNotificationOutputMapper extends GenericOutputMapper<Long, ChallengeNotification>
 {
@@ -47,7 +46,7 @@ public class ChallengeNotificationOutputMapper extends GenericOutputMapper<Long,
     {
         try
         {
-            int count = GameNotificationTDG.delete(c.getId(), c.getVersion());
+            int count = ChallengeNotificationTDG.delete(c.getId(), c.getVersion());
             if (count == 0)
                 throw new LostUpdateException("Lost update deleting ChallengeNotification with id " + c.getId());
             
