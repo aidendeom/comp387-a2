@@ -24,7 +24,7 @@ public class Game extends CheckersDispatcher {
 				forward("move.jsp"); 
 				//do we also need to catch an exception on "current player in game?"
 			} catch (final NeedToBeLoggedInException e) {
-				fail("You need to be logged in to challenge a player.");
+				fail("You need to be logged in to make a move.");
 			} catch (final CommandException e) {
 				fail(e);
 			} catch (InstantiationException | IllegalAccessException | MapperException | SQLException e) {
