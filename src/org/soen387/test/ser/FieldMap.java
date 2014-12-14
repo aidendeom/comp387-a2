@@ -18,7 +18,7 @@ public class FieldMap extends ThreadLocal<Map<String, String>> {
 		 * This is the URL for your application. Note that it should have no trailing slash
 		 * 
 		 */
-		myMap.put("BASE_URL", "http://localhost:8080/soen387-a2");
+		myMap.put("BASE_URL", "http://localhost:8080/CheckersGame");
 
 		/*
 		 * 
@@ -85,7 +85,7 @@ public class FieldMap extends ThreadLocal<Map<String, String>> {
 		myMap.put("CHALLENGE_REFUSE_VALUE", "2");
 		
 		//UC 8
-		myMap.put("LIST_GAMES_PATH", "/Game/Board/");
+		myMap.put("LIST_GAMES_PATH", "/Game/ListGames");
 		myMap.put("LIST_GAMES_PAGED_PATH", "/Game/Board/p$page$r$rows$");
 		
 		

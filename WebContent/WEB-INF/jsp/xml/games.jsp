@@ -5,7 +5,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkers>
 <status>success</status>
- <games>
+ <games page="${page}" count="${count}">
  <c:forEach var="game" items="${games }">
   <game id="${game.id}" version="${game.version}" status="${game.status.id}">
    <firstPlayer refid="${game.firstPlayer.id}" />
