@@ -5,7 +5,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkers>
     <status>success</status>
-    <notifications page="${page}" count="${length}">
+    <notifications page="${page}" count="${count}">
         <c:forEach var="n" items="${notifications}">
             <${n.type.stringVal} id="${n.id}" version="${n.version}" recipient="${n.recipient.id}" seen="${n.wasSeen}" ${n.target}/>
         </c:forEach>

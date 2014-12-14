@@ -44,11 +44,16 @@
         <attribute name="challenge" />
     </Permalink>
     <Permalink>
-        <pattern>Game/UnseenNotifications</pattern>
+        <pattern>Game/Notifications/Unseen</pattern>
         <dispatcher>org.soen387.app.dispatcher.ViewUnseenNotifications</dispatcher>
     </Permalink>
-        <Permalink>
+    <Permalink>
         <pattern>Game/Notifications</pattern>
         <dispatcher>org.soen387.app.dispatcher.ViewNotifications</dispatcher>
+    </Permalink>
+    <Permalink>
+        <pattern>Game/Notifications/(\d*)/Delete</pattern>
+        <dispatcher>org.soen387.app.dispatcher.DeleteNotification</dispatcher>
+        <aatribute name="notificationID" />
     </Permalink>
 </permalinks>
