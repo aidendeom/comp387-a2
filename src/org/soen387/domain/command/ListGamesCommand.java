@@ -31,12 +31,15 @@ public class ListGamesCommand extends CheckersCommand {
             if (count > 0)
             {
                 int rows = 10;
-
-                if (helper.getAttribute("r") != null)
+                
+                if (helper.getString("r") != null)
                     rows = helper.getInt("r");
-                if (helper.getAttribute("p") != null)
+                if (helper.getString("p") != null)
                     page = helper.getInt("p");
 
+                System.out.println(rows);
+                System.out.println(page);
+                
                 rows = clamp(rows, 1, l.size());
                 page = clamp(page, 1, (int) Math.ceil((float) l.size() / rows));
 

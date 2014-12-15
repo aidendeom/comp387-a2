@@ -32,9 +32,9 @@ public class ListPlayersCommand extends CheckersCommand {
 			{
 			    int rows = 10;
 			    
-                if (helper.getAttribute("r") != null)
+                if (helper.getString("r") != null)
                     rows = helper.getInt("r");
-                if (helper.getAttribute("p") != null)
+                if (helper.getString("p") != null)
                     page = helper.getInt("p");
                 
                 rows = clamp(rows, 1, l.size());
