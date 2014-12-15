@@ -13,7 +13,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/httpmime-4.3.5.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/log4j-1.2.16.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mysql-connector-java-5.0.8-bin.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/SoenEA2.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/stringtemplate.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/taglibs-standard-compat-1.2.1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/taglibs-standard-impl-1.2.1.jar"/>
@@ -31,5 +30,6 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/SoenEA2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

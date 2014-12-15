@@ -26,7 +26,7 @@ public class WithdrawChallengeCommand extends CheckersCommand {
 	public WithdrawChallengeCommand(Helper helper) {
 		super(helper);
 	}
-
+	
 	@SetInRequestAttribute
 	@Source(sources=PermalinkSource.class)
 	@IdentityBasedProducer(mapper=ChallengeInputMapper.class)
