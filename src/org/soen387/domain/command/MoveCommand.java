@@ -77,9 +77,16 @@ public class MoveCommand extends CheckersCommand {
 				moves.add(new Point(x[i], y[i]));
 			}
 			//now call the moves method
+			boolean success = false;
 			for (int i = 0; i < moves.size()-1; i++){
-				checkerboard.move(moves.get(i), moves.get(i+1));
+				success = checkerboard.move(moves.get(i), moves.get(i+1));
 			}
+			
+			if (!success){
+				throw new InvalidMovesException();
+			}
+			
+			
 			
 	    }
 		catch (Exception e)

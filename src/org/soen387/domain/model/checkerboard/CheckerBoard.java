@@ -3,6 +3,8 @@ package org.soen387.domain.model.checkerboard;
 import java.awt.Point;
 
 import org.dsrg.soenea.domain.DomainObject;
+import org.soen387.domain.model.notification.game.GameNotificationFactory;
+import org.soen387.domain.model.notification.game.GameNotificationType;
 import org.soen387.domain.model.player.IPlayer;
 
 public class CheckerBoard extends DomainObject<Long> implements ICheckerBoard {
@@ -76,9 +78,17 @@ public class CheckerBoard extends DomainObject<Long> implements ICheckerBoard {
 
 
 	@Override
-	public void move(Point source, Point target) {
-		//notify of turn to second player
+	public boolean move(Point source, Point target) {
+		//we don't have the logic, assume the move is successful so switch current player
+		//and notify the other player
+		if(currentPlayer.equals(firstPlayer)){
+			currentPlayer = secondPlayer;
+			//GameNotificationFactory.createNew(secondPlayer, this, GameNotificationType.Started);
+		} else {
+			currentPlayer = firstPlayer;
+		}
 		
+		return true;
 	}
 	
 	@Override

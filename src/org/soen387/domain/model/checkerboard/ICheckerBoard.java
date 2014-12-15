@@ -27,7 +27,7 @@ public interface ICheckerBoard extends IDomainObject<Long> {
 
 	public abstract void setCurrentPlayer(IPlayer currentPlayer);
 
-	public abstract void move(Point source, Point target);
+	public abstract boolean move(Point source, Point target);
 
 	public abstract void jump(Point source, Point... targets);
 

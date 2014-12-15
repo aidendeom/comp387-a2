@@ -22,7 +22,7 @@ public class Game extends CheckersDispatcher {
 			try {
 				new MoveCommand(myHelper).execute();
 				UoW.getCurrent().commit(); //we need UoW to save our move to game changes
-				forward("move.jsp"); 
+				forward("checkerboard.jsp"); 
 				//do we also need to catch an exception on "current player in game?"
 			} catch (final NeedToBeLoggedInException e) {
 				fail("You need to be logged in to make a move.");

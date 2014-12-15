@@ -67,8 +67,8 @@ public class CheckerBoardProxy extends DomainObjectProxy<Long, CheckerBoard>impl
 	}
 
 	@Override
-	public void move(Point source, Point target) {
-		getInnerObject().move(source, target);
+	public boolean move(Point source, Point target) {
+		return getInnerObject().move(source, target);
 	}
 
 	@Override

@@ -5,8 +5,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkers>
 <status>success</status>
- <challenge id="${challenge.id }" version="${challenge.version }" status="${challenge.status.id }" > 
-  <challenger refid="${challenge.challenger.id }"/>
-  <challengee refid="${challenge.challengee.id }"/> 
- </challenge>
+ <game id="${checkerboard.id}" version="${checkerboard.version}" status="${checkerboard.status.id}">
+  <firstPlayer refid="${checkerboard.firstPlayer.id}" />
+  <secondPlayer refid="${checkerboard.secondPlayer.id}" />
+  <currentPlayer refid="${checkerboard.currentPlayer.id}" />
+  <pieces>${checkerboard.pieces}</pieces>
+ </game>
 </checkers>
