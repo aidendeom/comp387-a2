@@ -67,7 +67,7 @@ public class CheckerBoardProxy extends DomainObjectProxy<Long, CheckerBoard>impl
 	}
 
 	@Override
-	public boolean move(Point source, Point target) throws SQLException, MapperException {
+	public boolean move(Point source, Point target){
 		return getInnerObject().move(source, target);
 	}
 

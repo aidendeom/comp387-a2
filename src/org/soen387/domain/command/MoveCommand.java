@@ -12,11 +12,14 @@ import org.dsrg.soenea.domain.command.validator.source.impl.AttributeSource;
 import org.dsrg.soenea.domain.command.validator.source.impl.ParameterSource;
 import org.dsrg.soenea.domain.command.validator.source.impl.PermalinkSource;
 import org.dsrg.soenea.domain.helper.Helper;
+import org.dsrg.soenea.uow.UoW;
 import org.soen387.domain.command.exception.InvalidMovesException;
 import org.soen387.domain.command.exception.ItsNotYourMoveException;
 import org.soen387.domain.command.exception.NeedToBeLoggedInException;
 import org.soen387.domain.model.checkerboard.ICheckerBoard;
 import org.soen387.domain.model.checkerboard.mapper.CheckerBoardInputMapper;
+import org.soen387.domain.model.notification.game.GameNotificationFactory;
+import org.soen387.domain.model.notification.game.GameNotificationType;
 
 public class MoveCommand extends CheckersCommand {
 
@@ -70,9 +73,6 @@ public class MoveCommand extends CheckersCommand {
 			List<Point> moves = new ArrayList<Point>();
 			moves.add(source);
 			
-			for (Point point: moves){
-				System.out.println(point);
-			}
 			//get all target positions
 			for(int i = 1; i < x.length; i++){
 				moves.add(new Point(x[i], y[i]));
@@ -87,7 +87,18 @@ public class MoveCommand extends CheckersCommand {
 				throw new InvalidMovesException();
 			}
 			
+			//somewhere there should be a win condition to check and notify of win
 			
+			if(checkerboard.getCurrentPlayer().equals(checkerboard.getFirstPlayer())){
+				checkerboard.setCurrentPlayer(checkerboard.getSecondPlayer());
+				GameNotificationFactory.createNew(checkerboard.getSecondPlayer(), checkerboard, GameNotificationType.Turn);
+				
+			} else {
+				checkerboard.setCurrentPlayer(checkerboard.getFirstPlayer());
+				GameNotificationFactory.createNew(checkerboard.getFirstPlayer(),checkerboard, GameNotificationType.Turn);
+			}
+			
+			UoW.getCurrent().registerDirty(checkerboard);
 			
 	    }
 		catch (Exception e)
