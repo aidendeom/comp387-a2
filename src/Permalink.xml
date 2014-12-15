@@ -5,6 +5,11 @@
         <attribute name="checkerboard" />
     </Permalink>
     <Permalink>
+        <pattern>Game/Board/(\d*)/Concede</pattern>
+        <dispatcher>org.soen387.app.dispatcher.ConcedeGame</dispatcher>
+        <attribute name="checkerboard" />
+    </Permalink>
+    <Permalink>
         <pattern>Game/ListChallenges</pattern>
         <dispatcher>org.soen387.app.dispatcher.ListChallenges</dispatcher>
     </Permalink>    
@@ -61,11 +66,11 @@
         <dispatcher>org.soen387.app.dispatcher.DeleteNotification</dispatcher>
         <attribute name="notificationID" />
     </Permalink>
-        <Permalink>
+    <Permalink>
         <pattern>Game/DeleteAccount</pattern>
         <dispatcher>org.soen387.app.dispatcher.DeletePlayer</dispatcher>
     </Permalink>
-      <Permalink>
+    <Permalink>
         <pattern>Game/Challenge/(\d*)/Withdraw</pattern>
         <dispatcher>org.soen387.app.dispatcher.WithdrawChallenge</dispatcher>
         <attribute name="challenge" />

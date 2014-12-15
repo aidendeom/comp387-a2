@@ -36,9 +36,6 @@ public class ListGamesCommand extends CheckersCommand {
                     rows = helper.getInt("r");
                 if (helper.getString("p") != null)
                     page = helper.getInt("p");
-
-                System.out.println(rows);
-                System.out.println(page);
                 
                 rows = clamp(rows, 1, l.size());
                 page = clamp(page, 1, (int) Math.ceil((float) l.size() / rows));
