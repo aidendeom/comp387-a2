@@ -9,6 +9,8 @@ import org.dsrg.soenea.domain.command.CommandException;
 import org.dsrg.soenea.domain.command.impl.annotation.SetInRequestAttribute;
 import org.dsrg.soenea.domain.command.validator.source.IdentityBasedProducer;
 import org.dsrg.soenea.domain.command.validator.source.Source;
+import org.dsrg.soenea.domain.command.validator.source.impl.AttributeSource;
+import org.dsrg.soenea.domain.command.validator.source.impl.ParameterSource;
 import org.dsrg.soenea.domain.command.validator.source.impl.PermalinkSource;
 import org.dsrg.soenea.domain.helper.Helper;
 import org.soen387.domain.command.exception.InvalidMovesException;
@@ -24,17 +26,17 @@ public class MoveCommand extends CheckersCommand {
 	}
 	
 	@SetInRequestAttribute
-	@Source(sources=PermalinkSource.class)
+	@Source(sources = {AttributeSource.class, ParameterSource.class})
 	@IdentityBasedProducer(mapper=CheckerBoardInputMapper.class)
 	public ICheckerBoard checkerboard;
 	
-	@Source(sources=PermalinkSource.class)
+	@Source(sources = {AttributeSource.class, ParameterSource.class})
 	public long version;
 	
-	@Source(sources=PermalinkSource.class)
+	@Source(sources = {AttributeSource.class, ParameterSource.class})
 	public int[] x;
 	
-	@Source(sources=PermalinkSource.class)
+	@Source(sources = {AttributeSource.class, ParameterSource.class})
 	public int[] y;
 	
 	@Override
