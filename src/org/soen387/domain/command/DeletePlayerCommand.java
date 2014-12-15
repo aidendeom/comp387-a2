@@ -14,8 +14,10 @@ import org.soen387.domain.model.challenge.mapper.ChallengeInputMapper;
 import org.soen387.domain.model.checkerboard.GameStatus;
 import org.soen387.domain.model.checkerboard.ICheckerBoard;
 import org.soen387.domain.model.checkerboard.mapper.CheckerBoardInputMapper;
+import org.soen387.domain.model.notification.challenge.ChallengeNotification;
 import org.soen387.domain.model.notification.challenge.ChallengeNotificationFactory;
 import org.soen387.domain.model.notification.challenge.ChallengeNotificationType;
+import org.soen387.domain.model.notification.challenge.mapper.ChallengeNotificationInputMapper;
 import org.soen387.domain.model.notification.game.GameNotificationFactory;
 import org.soen387.domain.model.notification.game.GameNotificationType;
 import org.soen387.domain.model.player.IPlayer;
@@ -46,8 +48,15 @@ public class DeletePlayerCommand extends CheckersCommand
                 {
                     if (c.getChallenger().equals(p))
                     {
-                        // TODO: Withdraw the challenge here!
-                        // Don't forget to delete the unseen notifications!
+                        c.setStatus(ChallengeStatus.Withdrawn);
+                        //delete any unseen challengeIssued notifications
+                        List<ChallengeNotification> l = ChallengeNotificationInputMapper.findUnseen(c);
+                        
+                        for (int i = 0; i < l.size(); i++)
+                        {
+                            ChallengeNotification n = l.get(i);
+                            UoW.getCurrent().registerRemoved(n);    
+                        }
                     }
                     else
                     {
@@ -60,7 +69,7 @@ public class DeletePlayerCommand extends CheckersCommand
             }
             
             List<ICheckerBoard> games = CheckerBoardInputMapper.find(p);
-            
+            // Concede all games
             for (ICheckerBoard b : games)
             {
                 if (b.getStatus() == GameStatus.Ongoing)
@@ -75,8 +84,8 @@ public class DeletePlayerCommand extends CheckersCommand
                 }
             }
             
-            String ps = String.format("del_[%d]", p.getId());
-            String us = String.format("del_[%d]", p.getUser().getId());
+            String ps = String.format("del_%d", p.getId());
+            String us = String.format("del_%d", p.getUser().getId());
             p.getUser().setPassword("-");
             p.getUser().setUsername(us);
             p.setFirstName(ps);
