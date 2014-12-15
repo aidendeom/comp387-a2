@@ -1,0 +1,42 @@
+package org.soen387.app.dispatcher;
+
+import java.io.IOException;
+import java.sql.SQLException;
+
+import javax.servlet.ServletException;
+
+import org.dsrg.soenea.domain.MapperException;
+import org.dsrg.soenea.domain.command.CommandException;
+import org.dsrg.soenea.uow.UoW;
+import org.soen387.domain.command.WithdrawChallengeCommand;
+import org.soen387.domain.command.exception.CanOnlyRespondToOpenChallengesException;
+import org.soen387.domain.command.exception.CanOnlyWithdrawChallengeIssuedByYouException;
+import org.soen387.domain.command.exception.NeedToBeLoggedInException;
+
+public class WithdrawChallenge extends CheckersDispatcher {
+
+	@Override
+	public void execute() throws ServletException, IOException {
+		if(isSubmission) {
+			try {
+				new WithdrawChallengeCommand(myHelper).execute();
+				UoW.getCurrent().commit();
+				forward("success.jsp");
+			} catch (final NeedToBeLoggedInException e) {
+				fail("You need to be logged in to withdraw a challenge.");
+			} catch (final CanOnlyWithdrawChallengeIssuedByYouException e) {
+				fail("You can only withdraw challenges that you Issued.");
+			} catch (final CanOnlyRespondToOpenChallengesException e) {
+				fail("The challenge you are trying to withdraw either does not exist or is no longer open.");
+			} catch (final CommandException e) {
+				fail(e);
+			} catch (InstantiationException | IllegalAccessException | MapperException | SQLException e) {
+				fail(e); //UoW went to crap 
+			}
+		} else {
+			//I guess this would give an HTML form? Is there a use for GET? It might be more plausible if looking
+			//at an individual challenge?
+			//There's something in SOENEA that filters on this, but let's hold off
+		}
+	}
+}

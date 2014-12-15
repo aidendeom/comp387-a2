@@ -65,4 +65,9 @@
         <pattern>Game/DeleteAccount</pattern>
         <dispatcher>org.soen387.app.dispatcher.DeletePlayer</dispatcher>
     </Permalink>
+      <Permalink>
+        <pattern>Game/Challenge/(\d*)/Withdraw</pattern>
+        <dispatcher>org.soen387.app.dispatcher.WithdrawChallenge</dispatcher>
+        <attribute name="challenge" />
+    </Permalink>
 </permalinks>
