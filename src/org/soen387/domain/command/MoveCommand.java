@@ -60,7 +60,7 @@ public class MoveCommand extends CheckersCommand {
 				throw new NeedToBeLoggedInException();
 			}
 			
-			if (checkerboard.getCurrentPlayer().equals(currentPlayer)){
+			if (!checkerboard.getCurrentPlayer().equals(currentPlayer)){
 				throw new ItsNotYourMoveException();
 			}
 			
