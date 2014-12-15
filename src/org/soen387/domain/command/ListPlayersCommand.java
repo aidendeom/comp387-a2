@@ -1,6 +1,7 @@
 package org.soen387.domain.command;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.dsrg.soenea.domain.MapperException;
@@ -24,6 +25,8 @@ public class ListPlayersCommand extends CheckersCommand {
 		try
 		{		    
 			List<IPlayer> l = PlayerInputMapper.findAll();
+			
+			l.sort(Comparator.comparing(IPlayer::getFirstName).thenComparing(IPlayer::getLastName));
 			
 			int count = l.size();
 			int page = 1;
