@@ -10,6 +10,7 @@ import org.dsrg.soenea.domain.command.CommandException;
 import org.dsrg.soenea.uow.UoW;
 import org.soen387.domain.command.MoveCommand;
 import org.soen387.domain.command.ViewGameCommand;
+import org.soen387.domain.command.exception.ItsNotYourMoveException;
 import org.soen387.domain.command.exception.NeedToBeLoggedInException;
 
 public class Game extends CheckersDispatcher {
@@ -25,6 +26,8 @@ public class Game extends CheckersDispatcher {
 				//do we also need to catch an exception on "current player in game?"
 			} catch (final NeedToBeLoggedInException e) {
 				fail("You need to be logged in to make a move.");
+			} catch (final ItsNotYourMoveException e){
+				fail("This is not your move to make.");
 			} catch (final CommandException e) {
 				fail(e);
 			} catch (InstantiationException | IllegalAccessException | MapperException | SQLException e) {

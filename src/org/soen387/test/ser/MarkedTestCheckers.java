@@ -572,13 +572,10 @@ public class MarkedTestCheckers {
 	public final String LIST_PLAYERS = BASE_URL+FieldMap.current.get().get("LIST_PLAYERS_PATH");
 	public Document listPlayers(CloseableHttpClient closeableHttpClient) throws ParseException, ClientProtocolException, IOException, SAXException {
 		
-		HttpPost httpPost = new HttpPost(LIST_PLAYERS);
-		List <NameValuePair> nvps = new ArrayList <NameValuePair>();
-		nvps.add(new BasicNameValuePair(FieldMap.current.get().get("XML_PARAM"), FieldMap.current.get().get("XML_VALUE")));
-		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
-		CloseableHttpResponse requestResponse = closeableHttpClient.execute(httpPost);
+		HttpGet httpGet = new HttpGet(LIST_PLAYERS+"?"+FieldMap.current.get().get("XML_PARAM")+"="+FieldMap.current.get().get("XML_VALUE"));
+		CloseableHttpResponse requestResponse = closeableHttpClient.execute(httpGet);
 		String response = EntityUtils.toString(requestResponse.getEntity());
-		String details = prettyPrintPost(httpPost, nvps, response);
+		String details = httpGet.toString();
 		System.out.println(details);
 		requestResponse.close();
 		return XMLUnit.buildControlDocument(response);
@@ -607,13 +604,10 @@ public class MarkedTestCheckers {
 		template.setTemplate(VIEW_PLAYER_STATS);
 		template.setAttribute("id", id+"");
 		
-		HttpPost httpPost = new HttpPost(template.toString());
-		List <NameValuePair> nvps = new ArrayList <NameValuePair>();
-		nvps.add(new BasicNameValuePair(FieldMap.current.get().get("XML_PARAM"), FieldMap.current.get().get("XML_VALUE")));
-		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
-		CloseableHttpResponse requestResponse = closeableHttpClient.execute(httpPost);
+		HttpGet httpGet = new HttpGet(template.toString()+"?"+FieldMap.current.get().get("XML_PARAM")+"="+FieldMap.current.get().get("XML_VALUE"));
+		CloseableHttpResponse requestResponse = closeableHttpClient.execute(httpGet);
 		String response = EntityUtils.toString(requestResponse.getEntity());
-		String details = prettyPrintPost(httpPost, nvps, response);
+		String details = httpGet.toString();
 		System.out.println(details);
 		requestResponse.close();
 		return XMLUnit.buildControlDocument(response);
@@ -680,13 +674,10 @@ public class MarkedTestCheckers {
 	public final String LIST_GAMES = BASE_URL+FieldMap.current.get().get("LIST_GAMES_PATH");
 	public Document listGames(CloseableHttpClient closeableHttpClient) throws ParseException, ClientProtocolException, IOException, SAXException {
 		
-		HttpPost httpPost = new HttpPost(LIST_GAMES);
-		List <NameValuePair> nvps = new ArrayList <NameValuePair>();
-		nvps.add(new BasicNameValuePair(FieldMap.current.get().get("XML_PARAM"), FieldMap.current.get().get("XML_VALUE")));
-		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
-		CloseableHttpResponse requestResponse = closeableHttpClient.execute(httpPost);
+		HttpGet httpGet = new HttpGet(LIST_GAMES+"?"+FieldMap.current.get().get("XML_PARAM")+"="+FieldMap.current.get().get("XML_VALUE"));
+		CloseableHttpResponse requestResponse = closeableHttpClient.execute(httpGet);
 		String response = EntityUtils.toString(requestResponse.getEntity());
-		String details = prettyPrintPost(httpPost, nvps, response);
+		String details = httpGet.toString();
 		System.out.println(details);
 		requestResponse.close();
 		return XMLUnit.buildControlDocument(response);
@@ -727,13 +718,10 @@ public class MarkedTestCheckers {
 	public final String LIST_CHALLENGES = BASE_URL+FieldMap.current.get().get("LIST_CHALLENGES_PATH");
 	public Document listChallenges(CloseableHttpClient closeableHttpClient) throws ParseException, ClientProtocolException, IOException, SAXException {
 		
-		HttpPost httpPost = new HttpPost(LIST_CHALLENGES);
-		List <NameValuePair> nvps = new ArrayList <NameValuePair>();
-		nvps.add(new BasicNameValuePair(FieldMap.current.get().get("XML_PARAM"), FieldMap.current.get().get("XML_VALUE")));
-		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
-		CloseableHttpResponse requestResponse = closeableHttpClient.execute(httpPost);
+		HttpGet httpGet = new HttpGet(LIST_CHALLENGES+"?"+FieldMap.current.get().get("XML_PARAM")+"="+FieldMap.current.get().get("XML_VALUE"));
+		CloseableHttpResponse requestResponse = closeableHttpClient.execute(httpGet);
 		String response = EntityUtils.toString(requestResponse.getEntity());
-		String details = prettyPrintPost(httpPost, nvps, response);
+		String details = httpGet.toString();
 		System.out.println(details);
 		requestResponse.close();
 		return XMLUnit.buildControlDocument(response);

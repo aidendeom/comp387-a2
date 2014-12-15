@@ -77,9 +77,8 @@ public class CheckerBoard extends DomainObject<Long> implements ICheckerBoard {
 
 	@Override
 	public void move(Point source, Point target) {
-		//move the piece in source to target
-		//update the board piece array
-		//
+		//notify of turn to second player
+		
 	}
 	
 	@Override
