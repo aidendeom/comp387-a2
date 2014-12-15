@@ -11,6 +11,7 @@ import org.dsrg.soenea.uow.UoW;
 import org.soen387.domain.command.RespondToChallengeCommand;
 import org.soen387.domain.command.exception.CanOnlyRespondToChallengesIssuedAgainstYouException;
 import org.soen387.domain.command.exception.CanOnlyRespondToOpenChallengesException;
+import org.soen387.domain.command.exception.ChallengeHasBeenWithdrawnException;
 import org.soen387.domain.command.exception.NeedToBeLoggedInException;
 
 public class RespondToChallenge extends CheckersDispatcher {
@@ -28,6 +29,8 @@ public class RespondToChallenge extends CheckersDispatcher {
 				fail("You aren't the recipient of the challenge you are trying to respond to.");
 			} catch (final CanOnlyRespondToOpenChallengesException e) {
 				fail("The challenge you are trying to respond to either does not exist or is no longer open.");
+			} catch (final ChallengeHasBeenWithdrawnException e){
+				fail("The Challenge no longer appears to exist, perhaps it was withdrawn");
 			} catch (final CommandException e) {
 				fail(e);
 			} catch (InstantiationException | IllegalAccessException | MapperException | SQLException e) {

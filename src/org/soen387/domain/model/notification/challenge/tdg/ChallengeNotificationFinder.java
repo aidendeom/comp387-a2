@@ -59,4 +59,18 @@ public class ChallengeNotificationFinder
         
         return ps.executeQuery();
     }
+    
+    public static final String FIND_BY_CHALLENGE_UNSEEN = "SELECT " 
+    		+ ChallengeNotificationTDG.COLUMNS + " FROM " 
+    		+ ChallengeNotificationTDG.TABLE_NAME
+    		+ " WHERE challenge=? AND seen = False;";
+    
+    public static ResultSet findByChallengeUnseen(long challenge) throws SQLException
+    {
+    	Connection con = DbRegistry.getDbConnection();
+    	PreparedStatement ps = con.prepareStatement(FIND_BY_CHALLENGE_UNSEEN);
+    	ps.setLong(1, challenge);
+    	
+    	return ps.executeQuery();
+    }
 }

@@ -6,7 +6,8 @@ import org.dsrg.soenea.domain.producer.IdentityBasedProducerMethod;
 public enum ChallengeStatus {
 	Open,
 	Accepted,
-	Refused;
+	Refused,
+	Withdrawn;
 	
 	//Let's make it play nice with Javabeans
 	public int getId() { return this.ordinal(); }

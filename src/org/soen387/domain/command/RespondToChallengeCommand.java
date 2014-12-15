@@ -13,6 +13,7 @@ import org.dsrg.soenea.domain.helper.Helper;
 import org.dsrg.soenea.uow.UoW;
 import org.soen387.domain.command.exception.CanOnlyRespondToChallengesIssuedAgainstYouException;
 import org.soen387.domain.command.exception.CanOnlyRespondToOpenChallengesException;
+import org.soen387.domain.command.exception.ChallengeHasBeenWithdrawnException;
 import org.soen387.domain.command.exception.NeedToBeLoggedInException;
 import org.soen387.domain.model.challenge.ChallengeStatus;
 import org.soen387.domain.model.challenge.IChallenge;
@@ -55,6 +56,10 @@ public class RespondToChallengeCommand extends CheckersCommand {
 
 			if(!challenge.getStatus().equals(ChallengeStatus.Open)) {
 				throw new CanOnlyRespondToOpenChallengesException();
+			}
+			
+			if(challenge.getStatus().equals(ChallengeStatus.Withdrawn)){
+				throw new ChallengeHasBeenWithdrawnException();
 			}
 			
 			//Do it

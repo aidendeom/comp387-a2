@@ -78,6 +78,19 @@ public class ChallengeNotificationInputMapper
         }
     }
     
+    public static List<ChallengeNotification> findUnseen(IChallenge c) throws MapperException
+    {
+    	try 
+    	{
+    		ResultSet rs = ChallengeNotificationFinder.findByChallengeUnseen(c.getId());
+    		return buildCollection(rs);
+    	}
+    	catch (SQLException e)
+    	{
+    		throw new MapperException(e);
+    	}
+    }
+    
     public static List<ChallengeNotification> findAll() throws MapperException
     {
         try
