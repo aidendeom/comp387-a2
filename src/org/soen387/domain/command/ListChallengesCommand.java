@@ -32,9 +32,9 @@ public class ListChallengesCommand extends CheckersCommand {
             {
                 int rows = 10;
 
-                if (helper.getInt("r") != null)
+                if (helper.getAttribute("r") != null)
                     rows = helper.getInt("r");
-                if (helper.getInt("p") != null)
+                if (helper.getAttribute("p") != null)
                     page = helper.getInt("p");
 
                 rows = clamp(rows, 1, l.size());
