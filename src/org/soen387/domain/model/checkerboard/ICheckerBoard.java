@@ -1,7 +1,9 @@
 package org.soen387.domain.model.checkerboard;
 
 import java.awt.Point;
+import java.sql.SQLException;
 
+import org.dsrg.soenea.domain.MapperException;
 import org.dsrg.soenea.domain.interf.IDomainObject;
 import org.soen387.domain.model.player.IPlayer;
 
@@ -27,7 +29,7 @@ public interface ICheckerBoard extends IDomainObject<Long> {
 
 	public abstract void setCurrentPlayer(IPlayer currentPlayer);
 
-	public abstract boolean move(Point source, Point target);
+	public abstract boolean move(Point source, Point target) throws SQLException, MapperException;
 
 	public abstract void jump(Point source, Point... targets);
 

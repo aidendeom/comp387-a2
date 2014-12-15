@@ -1,8 +1,10 @@
 package org.soen387.domain.model.checkerboard;
 
 import java.awt.Point;
+import java.sql.SQLException;
 
 import org.dsrg.soenea.domain.DomainObject;
+import org.dsrg.soenea.domain.MapperException;
 import org.soen387.domain.model.notification.game.GameNotificationFactory;
 import org.soen387.domain.model.notification.game.GameNotificationType;
 import org.soen387.domain.model.player.IPlayer;
@@ -78,12 +80,14 @@ public class CheckerBoard extends DomainObject<Long> implements ICheckerBoard {
 
 
 	@Override
-	public boolean move(Point source, Point target) {
+	public boolean move(Point source, Point target) throws SQLException, MapperException {
 		//we don't have the logic, assume the move is successful so switch current player
+		//and we will assume that the board has been updated!
 		//and notify the other player
 		if(currentPlayer.equals(firstPlayer)){
 			currentPlayer = secondPlayer;
-			//GameNotificationFactory.createNew(secondPlayer, this, GameNotificationType.Started);
+			GameNotificationFactory.createNew(secondPlayer, this, GameNotificationType.Turn);
+			
 		} else {
 			currentPlayer = firstPlayer;
 		}
