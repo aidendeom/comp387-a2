@@ -16,6 +16,7 @@ import org.dsrg.soenea.uow.UoW;
 import org.soen387.domain.command.exception.InvalidMovesException;
 import org.soen387.domain.command.exception.ItsNotYourMoveException;
 import org.soen387.domain.command.exception.NeedToBeLoggedInException;
+import org.soen387.domain.model.checkerboard.GameStatus;
 import org.soen387.domain.model.checkerboard.ICheckerBoard;
 import org.soen387.domain.model.checkerboard.mapper.CheckerBoardInputMapper;
 import org.soen387.domain.model.notification.game.GameNotificationFactory;
@@ -85,9 +86,11 @@ public class MoveCommand extends CheckersCommand {
 					GameNotificationFactory.createNew(checkerboard.getFirstPlayer(), checkerboard, GameNotificationType.Loss);
 					GameNotificationFactory.createNew(checkerboard.getCurrentPlayer(), checkerboard, GameNotificationType.Won);
 				}
+				checkerboard.setStatus(GameStatus.Won);
 			} else if (checkerboard.isTied()){
 				GameNotificationFactory.createNew(checkerboard.getFirstPlayer(), checkerboard, GameNotificationType.Tied);
 				GameNotificationFactory.createNew(checkerboard.getSecondPlayer(), checkerboard, GameNotificationType.Tied);
+				checkerboard.setStatus(GameStatus.Tied);
 			
 			} else {
 				if(checkerboard.getCurrentPlayer().equals(checkerboard.getFirstPlayer())){
