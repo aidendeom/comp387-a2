@@ -61,8 +61,8 @@ public class FieldMap extends ThreadLocal<Map<String, String>> {
 		myMap.put("EMAIL_PARAM", "email");
 		
 		//UC 4
-		myMap.put("LIST_PLAYERS_PATH", "/Game/Player/");
-		myMap.put("LIST_PLAYERS_PAGED_PATH", "/Game/Player/p$page$r$rows$");
+		myMap.put("LIST_PLAYERS_PATH", "/Game/ListPlayers");
+		myMap.put("LIST_PLAYERS_PAGED_PATH", "/Game/ListPlayers?p$page$&r$rows$");
 
 		
 		//UC 5
@@ -86,15 +86,15 @@ public class FieldMap extends ThreadLocal<Map<String, String>> {
 		
 		//UC 8
 		myMap.put("LIST_GAMES_PATH", "/Game/ListGames");
-		myMap.put("LIST_GAMES_PAGED_PATH", "/Game/Board/p$page$r$rows$");
+		myMap.put("LIST_GAMES_PAGED_PATH", "/Game/ListGames?p$page$&r$rows$");
 		
 		
 		//UC 9
 		myMap.put("VIEW_GAME_PATH", "/Game/Board/$id$");
 		
 		//UC 10
-		myMap.put("LIST_CHALLENGES_PATH", "/Game/Challenge/");
-		myMap.put("LIST_CHALLENGES_PAGED_PATH", "/Game/Challenge/p$page$r$rows$");
+		myMap.put("LIST_CHALLENGES_PATH", "/Game/ListChallenges");
+		myMap.put("LIST_CHALLENGES_PAGED_PATH", "/Game/ListChallenges?p$page$&r$rows$");
 
 		//UC 11
 		myMap.put("PLAY_GAME_PATH", "/Game/Board/$id$");

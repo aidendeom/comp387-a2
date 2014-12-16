@@ -22,7 +22,7 @@ public class ListGamesCommand extends CheckersCommand {
 	@Override
 	public void process() throws CommandException {
 		try
-		{
+		{		    
 		    List<ICheckerBoard> l = CheckerBoardInputMapper.findAll();
 		    
             int count = l.size();
