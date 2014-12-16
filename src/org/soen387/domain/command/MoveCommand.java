@@ -66,7 +66,7 @@ public class MoveCommand extends CheckersCommand {
 			}
 			
 			boolean success = true;
-			for (int i = 0; i < moves.size() && success; i++){
+			for (int i = 0; i < moves.size() - 1 && success; i++){
 				success &= checkerboard.move(moves.get(i), moves.get(i+1));
 			}
 			
