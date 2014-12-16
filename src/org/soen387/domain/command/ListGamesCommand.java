@@ -6,6 +6,9 @@ import java.util.List;
 import org.dsrg.soenea.domain.MapperException;
 import org.dsrg.soenea.domain.command.CommandException;
 import org.dsrg.soenea.domain.command.impl.annotation.SetInRequestAttribute;
+import org.dsrg.soenea.domain.command.validator.source.NotRequired;
+import org.dsrg.soenea.domain.command.validator.source.Source;
+import org.dsrg.soenea.domain.command.validator.source.impl.PermalinkSource;
 import org.dsrg.soenea.domain.helper.Helper;
 import org.soen387.domain.model.checkerboard.ICheckerBoard;
 import org.soen387.domain.model.checkerboard.mapper.CheckerBoardInputMapper;
@@ -19,36 +22,39 @@ public class ListGamesCommand extends CheckersCommand {
 	@SetInRequestAttribute
 	public List<ICheckerBoard> games;
 	
+	@NotRequired
+	@Source(sources={PermalinkSource.class})
+	public int p = 1;
+	
+	@NotRequired
+	@Source(sources=PermalinkSource.class)
+	public int r = 10;
+	
 	@Override
 	public void process() throws CommandException {
 		try
-		{		    
+		{
+		    System.out.println(p);
+		    System.out.println(r);
+		    
 		    List<ICheckerBoard> l = CheckerBoardInputMapper.findAll();
 		    
             int count = l.size();
-            int page = 1;
 
             if (count > 0)
             {
-                int rows = 10;
-                
-                if (helper.getString("r") != null)
-                    rows = helper.getInt("r");
-                if (helper.getString("p") != null)
-                    page = helper.getInt("p");
-                
-                rows = clamp(rows, 1, l.size());
-                page = clamp(page, 1, (int) Math.ceil((float) l.size() / rows));
+                r = clamp(r, 1, l.size());
+                p = clamp(p, 1, (int) Math.ceil((float) l.size() / r));
 
-                games = new ArrayList<ICheckerBoard>(rows);
-                int startIdx = (page - 1) * rows;
-                for (int i = startIdx; i < startIdx + rows; i++)
+                games = new ArrayList<ICheckerBoard>(r);
+                int startIdx = (p - 1) * r;
+                for (int i = startIdx; i < startIdx + r; i++)
                 {
                     games.add(l.get(i));
                 }
             }
 
-            helper.setRequestAttribute("page", page);
+            helper.setRequestAttribute("page", p);
             helper.setRequestAttribute("count", count);
 		}
 		catch (MapperException e)

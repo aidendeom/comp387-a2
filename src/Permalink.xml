@@ -12,14 +12,32 @@
     <Permalink>
         <pattern>Game/ListChallenges</pattern>
         <dispatcher>org.soen387.app.dispatcher.ListChallenges</dispatcher>
+    </Permalink>
+    <Permalink>
+        <pattern>Game/ListChallenges/p(\d*)r(\d*)</pattern>
+        <dispatcher>org.soen387.app.dispatcher.ListChallenges</dispatcher>
+        <attribute name="p" />
+        <attribute name="r" />
     </Permalink>    
     <Permalink>
         <pattern>Game/ListGames</pattern>
         <dispatcher>org.soen387.app.dispatcher.ListGames</dispatcher>
     </Permalink>
     <Permalink>
+        <pattern>Game/ListGames/p(\d*)r(\d*)</pattern>
+        <dispatcher>org.soen387.app.dispatcher.ListGames</dispatcher>
+        <attribute name="p" />
+        <attribute name="r" />
+    </Permalink>
+    <Permalink>
         <pattern>Game/ListPlayers</pattern>
         <dispatcher>org.soen387.app.dispatcher.ListPlayers</dispatcher>
+    </Permalink>
+    <Permalink>
+        <pattern>Game/ListPlayers/p(\d*)r(\d*)</pattern>
+        <dispatcher>org.soen387.app.dispatcher.ListPlayers</dispatcher>
+        <attribute name="p" />
+        <attribute name="r" />
     </Permalink>
     <Permalink>
         <pattern>Game/LogIn</pattern>
@@ -49,12 +67,20 @@
         <attribute name="challenge" />
     </Permalink>
     <Permalink>
-        <pattern>Game/Notifications/Unseen</pattern>
+        <pattern>Game/Notifications/Unseen/p(\d*)r(\d*)</pattern>
         <dispatcher>org.soen387.app.dispatcher.ListUnseenNotifications</dispatcher>
+        <attribute name="p" />
+        <attribute name="r" />
     </Permalink>
     <Permalink>
         <pattern>Game/Notifications</pattern>
         <dispatcher>org.soen387.app.dispatcher.ListNotifications</dispatcher>
+    </Permalink>
+    <Permalink>
+        <pattern>Game/Notifications/p(\d*)r(\d*)</pattern>
+        <dispatcher>org.soen387.app.dispatcher.ListNotifications</dispatcher>
+        <attribute name="p" />
+        <attribute name="r" />
     </Permalink>
     <Permalink>
         <pattern>Game/Notifications/(\d*)</pattern>

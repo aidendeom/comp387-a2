@@ -7,6 +7,9 @@ import java.util.List;
 import org.dsrg.soenea.domain.MapperException;
 import org.dsrg.soenea.domain.command.CommandException;
 import org.dsrg.soenea.domain.command.impl.annotation.SetInRequestAttribute;
+import org.dsrg.soenea.domain.command.validator.source.NotRequired;
+import org.dsrg.soenea.domain.command.validator.source.Source;
+import org.dsrg.soenea.domain.command.validator.source.impl.PermalinkSource;
 import org.dsrg.soenea.domain.helper.Helper;
 import org.soen387.domain.command.exception.NeedToBeLoggedInException;
 import org.soen387.domain.model.notification.Notification;
@@ -24,6 +27,14 @@ public class ListNotificationsCommand extends CheckersCommand
     
     @SetInRequestAttribute
     public List<Notification> notifications;
+    
+    @NotRequired
+    @Source(sources={PermalinkSource.class})
+    public int p = 1;
+    
+    @NotRequired
+    @Source(sources=PermalinkSource.class)
+    public int r = 10;
     
     public boolean onlyUnseen = false;
     
@@ -52,8 +63,6 @@ public class ListNotificationsCommand extends CheckersCommand
             
             int numNotifications = gameNotifications.size() + challengeNotifications.size();
             
-            int page = 1;
-            
             if (numNotifications > 0)
             {
                 ArrayList<Notification> l = new ArrayList<Notification>(numNotifications);
@@ -69,26 +78,18 @@ public class ListNotificationsCommand extends CheckersCommand
                 
                 l.sort(Comparator.comparing(Notification::getId));
                 
-                int rows = 10;
+                r = clamp(r, 1, l.size());
+                p = clamp(p, 1, (int)Math.ceil((float)l.size() / r));
                 
-                
-                if (helper.getString("r") != null)
-                    rows = helper.getInt("r");
-                if (helper.getString("p") != null)
-                    page = helper.getInt("p");
-                
-                rows = clamp(rows, 1, l.size());
-                page = clamp(page, 1, (int)Math.ceil((float)l.size() / rows));
-                
-                notifications = new ArrayList<Notification>(rows);
-                int startIdx = (page - 1) * rows;
-                for (int i = startIdx; i < startIdx + rows; i++)
+                notifications = new ArrayList<Notification>(r);
+                int startIdx = (p - 1) * r;
+                for (int i = startIdx; i < startIdx + r; i++)
                 {
                     notifications.add(l.get(i));
                 }
             }
             
-            helper.setRequestAttribute("page", page);
+            helper.setRequestAttribute("page", p);
             helper.setRequestAttribute("count", numNotifications);
         }
         catch (MapperException e)
