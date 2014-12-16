@@ -58,19 +58,16 @@ public class MoveCommand extends CheckersCommand {
 				throw new InvalidMovesException();
 			}
 			
-			//get start value out on array [0]
-			Point source = new Point(x[0], y[0]);
-			List<Point> moves = new ArrayList<Point>();
-			moves.add(source);
 			
-			//get all target positions
-			for(int i = 1; i < x.length; i++){
+			List<Point> moves = new ArrayList<Point>();
+			
+			for(int i = 0; i < x.length; i++){
 				moves.add(new Point(x[i], y[i]));
 			}
-			//now call the moves method
-			boolean success = false;
-			for (int i = 0; i < moves.size()-1; i++){
-				success = checkerboard.move(moves.get(i), moves.get(i+1));
+			
+			boolean success = true;
+			for (int i = 0; i < moves.size() && success; i++){
+				success &= checkerboard.move(moves.get(i), moves.get(i+1));
 			}
 			
 			if (!success){

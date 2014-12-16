@@ -1,9 +1,7 @@
 package org.soen387.domain.model.checkerboard;
 
 import java.awt.Point;
-import java.sql.SQLException;
 
-import org.dsrg.soenea.domain.MapperException;
 import org.dsrg.soenea.domain.interf.IDomainObject;
 import org.soen387.domain.model.player.IPlayer;
 
