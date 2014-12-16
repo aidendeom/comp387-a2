@@ -86,4 +86,16 @@ public class CheckerBoardProxy extends DomainObjectProxy<Long, CheckerBoard>impl
 		}
 	}
 
+	@Override
+	public boolean isWon() {
+
+		return getInnerObject().isWon();
+	}
+
+	@Override
+	public boolean isTied() {
+
+		return getInnerObject().isTied();
+	}
+
 }

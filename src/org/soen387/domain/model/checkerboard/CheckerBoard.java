@@ -89,4 +89,16 @@ public class CheckerBoard extends DomainObject<Long> implements ICheckerBoard {
 	public void jump(Point source, Point... targets) {
 		
 	}
+
+	@Override
+	public boolean isWon() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isTied() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

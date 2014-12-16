@@ -45,17 +45,6 @@ public class MoveCommand extends CheckersCommand {
 	public void process() throws CommandException {
 		try
 	    {
-			for (Integer xval: x){
-				System.out.print(xval + " ");
-			}
-			System.out.println();
-			for (Integer yval: y){
-				System.out.print(yval+ " " );
-			}
-			System.out.println();
-			
-			System.out.println("Version: " + version);
-		
 			if (currentPlayer == null){
 				throw new NeedToBeLoggedInException();
 			}
@@ -87,17 +76,29 @@ public class MoveCommand extends CheckersCommand {
 				throw new InvalidMovesException();
 			}
 			
-			//somewhere there should be a win condition to check and notify of win
+			//lets check if we won or tied or is it just a turn
+			if (checkerboard.isWon()){
+				if(checkerboard.getCurrentPlayer().equals(checkerboard.getFirstPlayer())){
+					GameNotificationFactory.createNew(checkerboard.getSecondPlayer(), checkerboard, GameNotificationType.Loss);
+					GameNotificationFactory.createNew(checkerboard.getCurrentPlayer(), checkerboard, GameNotificationType.Won);
+				} else {
+					GameNotificationFactory.createNew(checkerboard.getFirstPlayer(), checkerboard, GameNotificationType.Loss);
+					GameNotificationFactory.createNew(checkerboard.getCurrentPlayer(), checkerboard, GameNotificationType.Won);
+				}
+			} else if (checkerboard.isTied()){
+				GameNotificationFactory.createNew(checkerboard.getFirstPlayer(), checkerboard, GameNotificationType.Tied);
+				GameNotificationFactory.createNew(checkerboard.getSecondPlayer(), checkerboard, GameNotificationType.Tied);
 			
-			if(checkerboard.getCurrentPlayer().equals(checkerboard.getFirstPlayer())){
-				checkerboard.setCurrentPlayer(checkerboard.getSecondPlayer());
-				GameNotificationFactory.createNew(checkerboard.getSecondPlayer(), checkerboard, GameNotificationType.Turn);
-				
 			} else {
-				checkerboard.setCurrentPlayer(checkerboard.getFirstPlayer());
-				GameNotificationFactory.createNew(checkerboard.getFirstPlayer(),checkerboard, GameNotificationType.Turn);
+				if(checkerboard.getCurrentPlayer().equals(checkerboard.getFirstPlayer())){
+					checkerboard.setCurrentPlayer(checkerboard.getSecondPlayer());
+					GameNotificationFactory.createNew(checkerboard.getSecondPlayer(), checkerboard, GameNotificationType.Turn);	
+				} else {
+					checkerboard.setCurrentPlayer(checkerboard.getFirstPlayer());
+					GameNotificationFactory.createNew(checkerboard.getFirstPlayer(),checkerboard, GameNotificationType.Turn);
+				}
 			}
-			
+		
 			UoW.getCurrent().registerDirty(checkerboard);
 			
 	    }

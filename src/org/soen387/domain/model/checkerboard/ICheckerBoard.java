@@ -32,5 +32,9 @@ public interface ICheckerBoard extends IDomainObject<Long> {
 	public abstract boolean move(Point source, Point target);
 
 	public abstract void jump(Point source, Point... targets);
+	
+	public abstract boolean isWon();
+	
+	public abstract boolean isTied();
 
 }
